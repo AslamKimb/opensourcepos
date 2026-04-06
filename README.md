@@ -76,6 +76,8 @@ Want to help translate Open Source Point of Sale in your language? You can find 
 
 Only with the help of the community, we can keep language translations up to date. Thanks!
 
+Before changing UI templates, review the [UI selector contracts checklist](UI_SELECTOR_CONTRACTS.md) to avoid breaking JavaScript view hooks.
+
 ## 🐛 Reporting Bugs
 
 Before creating a new issue, you'll need copy and include the info under the `System Info` tab in the configuration section in most cases. If that information is not provided in full, your issue might be tagged as pending.
