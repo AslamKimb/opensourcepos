@@ -1,9 +1,9 @@
 .report {
-    font-size: .85em;
+    font-size: var(--ui-font-size-sm);
 }
 
 #report_summary {
-    margin: 2em 0 auto;
+    margin: var(--ui-space-5) 0 auto;
     text-align: center;
 }
 
@@ -11,7 +11,7 @@
 
 #chart_report_summary {
     text-align: center;
-    margin-top: -100px;
+    margin-top: calc(-1 * (var(--ui-space-5) + var(--ui-space-5) + var(--ui-space-1)));
 }
 
 #chart_report_summary .summary_row {}
@@ -31,13 +31,13 @@
 .ct-label {
     fill: rgba(0, 0, 0, 1);
     color: rgba(0, 0, 0, 1);
-    font-size: 1.2rem;
+    font-size: var(--ui-font-size-xl);
 }
 
 .ct-tooltip-point {
     fill-opacity: 1 !important;
     stroke-width: 0px;
-    stroke: red;
+    stroke: #c0392b;
     transition: all 0.2s linear;
 }
 

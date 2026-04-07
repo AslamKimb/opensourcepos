@@ -14,9 +14,9 @@ a.none {
 
 .topbar {
     color: #eee;
-    font-size: 12px;
+    font-size: var(--ui-font-size-sm);
     background: #182735;
-    padding: 0.2em;
+    padding: var(--ui-space-1);
 }
 
 /* Add container-xxl width from Bootstrap 5 */
@@ -31,7 +31,7 @@ a.none {
 }
 
 .tab-pane {
-    padding-top: 10px;
+    padding-top: var(--ui-space-3);
 }
 
 .navbar-default .navbar-nav>.active>a,
@@ -47,7 +47,7 @@ a.none {
 
 .navbar .menu-icon {
     text-align: center;
-    font-size: 12px;
+    font-size: var(--ui-font-size-sm);
 }
 
 .navbar .menu-icon img {
@@ -55,7 +55,7 @@ a.none {
 }
 
 .wrapper {
-    font-size: 13px;
+    font-size: var(--ui-font-size-md);
 }
 
 #title_bar {
@@ -65,14 +65,14 @@ a.none {
 }
 
 #page_title {
-    font-size: 22px;
+    font-size: var(--ui-font-size-xl);
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 400;
 }
 
 #page_subtitle {
-    margin-bottom: 0.5em;
-    font-size: 16px;
+    margin-bottom: var(--ui-space-2);
+    font-size: var(--ui-font-size-lg);
     font-weight: bold;
     text-align: center;
 }
@@ -107,24 +107,24 @@ a.none {
 }
 
 #integrations_header {
-    margin: 10px 0;
+    margin: var(--ui-space-3) 0;
     text-align: center;
     font-size: 1.4em;
     font-weight: normal;
-    padding: 10px 0
+    padding: var(--ui-space-3) 0
 }
 
 #footer {
     margin-top: 5em;
     position: relative;
     text-align: center;
-    font-size: 11px;
-    color: #777777;
+    font-size: var(--ui-font-size-xs);
+    color: #6b7785;
     clear: both;
 }
 
 a.rollover img {
-    padding: 3px;
+    padding: var(--ui-space-1);
 }
 
 #filters.btn-group {
@@ -132,24 +132,24 @@ a.rollover img {
 }
 
 button.btn.dropdown-toggle.btn-sm {
-    background-color: white;
-    color: black;
-    border: 2px solid #dce4ec;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid var(--ui-border-color);
 }
 
 .dropdown-menu {
-    font-size: 13px;
+    font-size: var(--ui-font-size-md);
 }
 
 .bootstrap-tagsinput {
-    background-color: white;
-    color: black;
-    border: 2px solid #dce4ec;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid var(--ui-border-color);
     box-shadow: none;
 }
 
 label.required {
-    color: red;
+    color: #c0392b;
 }
 
 @media (min-width: 768px) {
@@ -167,7 +167,7 @@ label.required {
 }
 
 .modal-body {
-    max-height: calc(100vh - 212px);
+    max-height: calc(100vh - 13.25rem);
     overflow-y: auto;
 }
 
