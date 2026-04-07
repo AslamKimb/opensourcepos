@@ -1,7 +1,13 @@
+.register-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    gap: 0.5em;
+    align-items: start;
+}
+
 #register_wrapper {
-    float: left;
-    width: 70%;
-    font-size: var(--ui-font-size-md);
+    font-size: 13px;
+    min-width: 0;
 }
 
 #mode_form,
@@ -11,7 +17,7 @@
 
 #mode_form .panel-body,
 #add_item_form .panel-body {
-    padding: var(--ui-space-3);
+    padding: 0.7em;
     margin: 0;
 }
 
@@ -24,16 +30,16 @@
 
 #mode_form ul li,
 #add_item_form ul li {
-    margin-left: var(--ui-space-4);
+    margin-left: 1em;
 }
 
 .first_li {
-    margin-left: var(--ui-space-1) !important;
+    margin-left: 0.2em !important;
 }
 
 #mode_form ul.dropdown-menu.inner,
 #add_item_form ul.dropdown-menu.inner {
-    margin-left: calc(-1 * var(--ui-space-4)) !important;
+    margin-left: -1em !important;
 }
 
 #register {
@@ -41,24 +47,31 @@
     border-collapse: collapse;
 }
 
+.register-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.register-table-container #register {
+    min-width: 720px;
+}
+
 #register th {
-    padding: var(--ui-space-2);
+    padding: 5px;
     text-align: center;
 }
 
 #register td {
-    padding: var(--ui-space-1);
+    padding: 3px;
     text-align: center;
 }
 
 #overall_sale {
-    width: 29%;
-    float: left;
-    margin-left: var(--ui-space-1);
-    padding-bottom: var(--ui-space-4);
-    padding-top: var(--ui-space-4);
-    font-size: var(--ui-font-size-md);
+    padding-bottom: 1em;
+    padding-top: 1em;
+    font-size: 13px;
     text-align: center;
+    min-width: 0;
 }
 
 #overall_sale .panel-body {
@@ -71,8 +84,8 @@
 }
 
 #overall_sale .btn {
-    margin-top: var(--ui-space-2);
-    margin-bottom: var(--ui-space-2);
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 #payment_details,
@@ -87,7 +100,7 @@
 
 #sale_totals,
 #payment_totals {
-    border-top: 1px solid var(--ui-border-color-strong);
+    border-top: 1px solid #000;
 }
 
 input#amount_tendered:disabled {
@@ -95,14 +108,23 @@ input#amount_tendered:disabled {
 }
 
 #payment_details {
-    float: left;
-    border-top: 1px solid var(--ui-border-color-strong);
-    margin-top: var(--ui-space-1);
-    padding: var(--ui-space-2);
+    border-top: 1px solid #000;
+    margin-top: 0.2em;
+    padding: 0.5em;
     text-align: left;
     clear: both;
 }
 
+@media (max-width: 991px) {
+    .register-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .register-table-container #register {
+        min-width: 600px;
+    }
+}
+
 .alert {
-    margin-bottom: var(--ui-space-2);
+    margin-bottom: 5px;
 }
