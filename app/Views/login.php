@@ -15,7 +15,7 @@
 <head>
     <meta charset="utf-8">
     <base href="<?= base_url() ?>">
-    <title><?= $config['company'] . '&nbsp;|&nbsp;' . lang('Common.software_short') . '&nbsp;|&nbsp;' .  lang('Login.login') ?></title>
+    <title><?= esc($config['company']) . '&nbsp;|&nbsp;' . esc(lang('Common.software_short')) . '&nbsp;|&nbsp;' . esc(lang('Login.login')) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
@@ -37,7 +37,7 @@
         <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
             <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end border-secondary-subtle px-4 pb-3 p-md-4">
                 <?php if (isset($config['company_logo']) && !empty($config['company_logo'])): ?>
-                    <img class="logo w-100" src="<?= base_url('uploads/' . $config['company_logo']) ?>" alt="<?= lang('Common.logo') . '&nbsp;' . $config['company'] ?>">
+                    <img class="logo w-100" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
                 <?php else: ?>
                     <svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
                         <title><?= lang('Common.software_title') . '&nbsp;' . lang('Common.logo') ?></title>
@@ -48,18 +48,20 @@
             </div>
             <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
                 <?= form_open('login') ?>
-                <h3 class="text-center m-0"><?= lang('Login.welcome', [lang('Common.software_short')]) ?></h3>
+                <?php if (!$is_latest): ?>
+                    <h3 class="text-center m-0"><?= lang('Login.migration_required') ?></h3>
+                    <div class="alert alert-warning mt-3">
+                        <strong><?= lang('Login.migration_auth_message', [$latest_version]) ?></strong>
+                    </div>
+                <?php else: ?>
+                    <h3 class="text-center m-0"><?= lang('Login.welcome', [lang('Common.software_short')]) ?></h3>
+                <?php endif; ?>
                 <?php if ($has_errors): ?>
                     <?php foreach ($validation->getErrors() as $error): ?>
                         <div class="alert alert-danger mt-3">
                             <?= $error ?>
                         </div>
                     <?php endforeach; ?>
-                <?php endif; ?>
-                <?php if (!$is_latest): ?>
-                    <div class="alert alert-info mt-3">
-                        <?= lang('Login.migration_needed', [$latest_version]) ?>
-                    </div>
                 <?php endif; ?>
                 <?php if (empty($config['login_form']) || 'floating_labels' == ($config['login_form'])): ?>
                     <div class="form-floating mt-3">
@@ -93,11 +95,13 @@
                 <?php
                 if ($gcaptcha_enabled) {
                     echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
-                    echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . $config['gcaptcha_site_key'] . '"></div>';
+                    echo '<div class="g-recaptcha mb-3" style="text-align: center;" data-sitekey="' . esc($config['gcaptcha_site_key']) . '"></div>';
                 }
                 ?>
                 <div class="d-grid">
-                    <button class="btn btn-lg btn-primary" name="login-button" type="submit"><?= lang('Login.go') ?></button>
+                    <button class="btn btn-lg btn-primary" name="login-button" type="submit">
+                        <?= $is_latest ? lang('Login.go') : lang('Module.migrate') ?>
+                    </button>
                 </div>
                 <?= form_close() ?>
             </section>
