@@ -61,6 +61,7 @@ if (isset($success)) {
 helper('url');
 ?>
 
+<div class="register-layout">
 <div id="register_wrapper">
 
     <!-- Top register controls -->
@@ -137,54 +138,55 @@ helper('url');
 
     <!-- Sale Items List -->
 
-    <table class="sales_table_100" id="register">
-        <thead>
-            <tr>
-                <th style="width: 5%;"><?= lang('Common.delete') ?></th>
-                <th style="width: 15%;"><?= lang(ucfirst($controller_name) . '.item_number') ?></th>
-                <th style="width: 30%;"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
-                <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.price') ?></th>
-                <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.quantity') ?></th>
-                <th style="width: 15%;"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
-                <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.total') ?></th>
-                <th style="width: 5%;"><?= lang(ucfirst($controller_name) . '.update') ?></th>
-            </tr>
-        </thead>
-
-        <tbody id="cart_contents">
-            <?php if (count($cart) == 0) { ?>
+    <div class="register-table-container">
+        <table class="sales_table_100" id="register">
+            <thead>
                 <tr>
-                    <td colspan="8">
-                        <div class="alert alert-dismissible alert-info"><?= lang(ucfirst($controller_name) . '.no_items_in_cart') ?></div>
-                    </td>
+                    <th style="width: 5%;"><?= lang('Common.delete') ?></th>
+                    <th style="width: 15%;"><?= lang(ucfirst($controller_name) . '.item_number') ?></th>
+                    <th style="width: 30%;"><?= lang(ucfirst($controller_name) . '.item_name') ?></th>
+                    <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.price') ?></th>
+                    <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.quantity') ?></th>
+                    <th style="width: 15%;"><?= lang(ucfirst($controller_name) . '.discount') ?></th>
+                    <th style="width: 10%;"><?= lang(ucfirst($controller_name) . '.total') ?></th>
+                    <th style="width: 5%;"><?= lang(ucfirst($controller_name) . '.update') ?></th>
                 </tr>
-            <?php
-            } else {
-                foreach (array_reverse($cart, true) as $line => $item) {
-            ?>
-                    <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
-                        <tr>
-                            <td>
-                                <?php
-                                echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
-                                echo form_hidden('location', (string)$item['item_location']);
-                                echo form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]);
-                                ?>
-                            </td>
-                            <?php if ($item['item_type'] == ITEM_TEMP) { ?>
-                                <td><?= form_input(['name' => 'item_number', 'id' => 'item_number', 'class' => 'form-control input-sm', 'value' => $item['item_number'], 'tabindex' => ++$tabindex]) ?></td>
-                                <td style="align: center;">
-                                    <?= form_input(['name' => 'name', 'id' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'tabindex' => ++$tabindex]) ?>
+            </thead>
+
+            <tbody id="cart_contents">
+                <?php if (count($cart) == 0) { ?>
+                    <tr>
+                        <td colspan="8">
+                            <div class="alert alert-dismissible alert-info"><?= lang(ucfirst($controller_name) . '.no_items_in_cart') ?></div>
+                        </td>
+                    </tr>
+                <?php
+                } else {
+                    foreach (array_reverse($cart, true) as $line => $item) {
+                ?>
+                        <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
+                            <tr>
+                                <td>
+                                    <?php
+                                    echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
+                                    echo form_hidden('location', (string)$item['item_location']);
+                                    echo form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]);
+                                    ?>
                                 </td>
-                            <?php } else { ?>
-                                <td><?= esc($item['item_number']) ?></td>
-                                <td style="align: center;">
-                                    <?= esc($item['name']) . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']]) ?>
-                                    <br>
-                                    <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']';
-                                    endif; ?>
-                                </td>
-                            <?php } ?>
+                                <?php if ($item['item_type'] == ITEM_TEMP) { ?>
+                                    <td><?= form_input(['name' => 'item_number', 'id' => 'item_number', 'class' => 'form-control input-sm', 'value' => $item['item_number'], 'tabindex' => ++$tabindex]) ?></td>
+                                    <td style="align: center;">
+                                        <?= form_input(['name' => 'name', 'id' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'tabindex' => ++$tabindex]) ?>
+                                    </td>
+                                <?php } else { ?>
+                                    <td><?= esc($item['item_number']) ?></td>
+                                    <td style="align: center;">
+                                        <?= esc($item['name']) . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']]) ?>
+                                        <br>
+                                        <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']';
+                                        endif; ?>
+                                    </td>
+                                <?php } ?>
 
                             <td>
                                 <?php
@@ -280,13 +282,14 @@ helper('url');
                                 </td>
                             <?php } ?>
                         </tr>
-                    <?= form_close() ?>
-            <?php
+                        <?= form_close() ?>
+                <?php
+                    }
                 }
-            }
-            ?>
-        </tbody>
-    </table>
+                ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Overall Sale -->
@@ -468,25 +471,27 @@ helper('url');
                 <?php } ?>
 
                 <?php if (count($payments) > 0) { // Only show this part if there is at least one payment entered. ?>
-                    <table class="sales_table_100" id="register">
-                        <thead>
-                            <tr>
-                                <th style="width: 10%;"><?= lang('Common.delete') ?></th>
-                                <th style="width: 60%;"><?= lang(ucfirst($controller_name) . '.payment_type') ?></th>
-                                <th style="width: 20%;"><?= lang(ucfirst($controller_name) . '.payment_amount') ?></th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="payment_contents">
-                            <?php foreach ($payments as $payment_id => $payment) { ?>
+                    <div class="register-table-container">
+                        <table class="sales_table_100" id="register">
+                            <thead>
                                 <tr>
-                                    <td><?= anchor("$controller_name/deletePayment/". base64url_encode($payment_id), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
-                                    <td><?= $payment['payment_type'] ?></td>
-                                    <td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
+                                    <th style="width: 10%;"><?= lang('Common.delete') ?></th>
+                                    <th style="width: 60%;"><?= lang(ucfirst($controller_name) . '.payment_type') ?></th>
+                                    <th style="width: 20%;"><?= lang(ucfirst($controller_name) . '.payment_amount') ?></th>
                                 </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
+                            </thead>
+
+                            <tbody id="payment_contents">
+                                <?php foreach ($payments as $payment_id => $payment) { ?>
+                                    <tr>
+                                        <td><?= anchor("$controller_name/deletePayment/". base64url_encode($payment_id), '<span class="glyphicon glyphicon-trash"></span>') ?></td>
+                                        <td><?= $payment['payment_type'] ?></td>
+                                        <td style="text-align: right;"><?= to_currency($payment['payment_amount']) ?></td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php } ?>
             </div>
 
@@ -562,6 +567,7 @@ helper('url');
         }
         ?>
     </div>
+</div>
 </div>
 
 <script type="text/javascript">

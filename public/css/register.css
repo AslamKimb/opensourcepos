@@ -1,7 +1,13 @@
+.register-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+    gap: 0.5em;
+    align-items: start;
+}
+
 #register_wrapper {
-    float: left;
-    width: 70%;
     font-size: 13px;
+    min-width: 0;
 }
 
 #mode_form,
@@ -41,6 +47,15 @@
     border-collapse: collapse;
 }
 
+.register-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.register-table-container #register {
+    min-width: 720px;
+}
+
 #register th {
     padding: 5px;
     text-align: center;
@@ -52,13 +67,11 @@
 }
 
 #overall_sale {
-    width: 29%;
-    float: left;
-    margin-left: 0.1em;
     padding-bottom: 1em;
     padding-top: 1em;
     font-size: 13px;
     text-align: center;
+    min-width: 0;
 }
 
 #overall_sale .panel-body {
@@ -95,12 +108,21 @@ input#amount_tendered:disabled {
 }
 
 #payment_details {
-    float: left;
     border-top: 1px solid #000;
     margin-top: 0.2em;
     padding: 0.5em;
     text-align: left;
     clear: both;
+}
+
+@media (max-width: 991px) {
+    .register-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .register-table-container #register {
+        min-width: 600px;
+    }
 }
 
 .alert {
