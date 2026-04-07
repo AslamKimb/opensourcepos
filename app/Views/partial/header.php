@@ -51,18 +51,18 @@ $request = Services::request();
 <body>
     <div class="wrapper">
         <div class="topbar">
-            <div class="container">
-                <div class="navbar-left">
+            <div class="container topbar-row">
+                <div class="navbar-left topbar-item topbar-clock">
                     <div id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></div>
                 </div>
 
-                <div class="navbar-right" style="margin: 0;">
+                <div class="navbar-right topbar-item topbar-actions">
                     <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
                     <span>&nbsp;|&nbsp;</span>
                     <?= anchor('home/logout', lang('Login.logout')) ?>
                 </div>
 
-                <div class="navbar-center" style="text-align: center;">
+                <div class="navbar-center topbar-item topbar-company">
                     <strong><?= esc($config['company']) ?></strong>
                 </div>
             </div>

@@ -12,11 +12,36 @@ a.none {
     text-decoration: none;
 }
 
+/* Topbar and main navigation */
 .topbar {
     color: #eee;
-    font-size: 12px;
     background: #182735;
-    padding: 0.2em;
+    padding: 0.35em 0;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.topbar a {
+    color: inherit;
+}
+
+.topbar-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25em;
+}
+
+.topbar-item {
+    text-align: center;
+}
+
+.topbar-company {
+    font-size: 1.1em;
+    letter-spacing: 0.02em;
+}
+
+.topbar-actions {
+    margin: 0;
 }
 
 /* Add container-xxl width from Bootstrap 5 */
@@ -28,6 +53,7 @@ a.none {
 
 .navbar {
     border-radius: 0;
+    margin-bottom: 0;
 }
 
 .tab-pane {
@@ -48,6 +74,7 @@ a.none {
 .navbar .menu-icon {
     text-align: center;
     font-size: 12px;
+    line-height: 1.25;
 }
 
 .navbar .menu-icon img {
@@ -153,6 +180,25 @@ label.required {
 }
 
 @media (min-width: 768px) {
+    .topbar-row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 0.75em;
+    }
+
+    .topbar-clock {
+        text-align: left;
+    }
+
+    .topbar-company {
+        text-align: center;
+    }
+
+    .topbar-actions {
+        text-align: right;
+    }
+
     .navbar-nav>li>a {
         padding: 10px 10px 9px;
     }
