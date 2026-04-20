@@ -123,4 +123,17 @@ class AppTest extends CIUnitTestCase
         $this->assertStringContainsString('example.com', $app->baseURL);
         $this->assertStringNotContainsString('malicious.com', $app->baseURL);
     }
+
+    public function testBaseURLPreservesPortForAllowedHost(): void
+    {
+        $_SERVER['HTTP_HOST'] = '127.0.0.1:8097';
+        $_SERVER['SCRIPT_NAME'] = '/index.php';
+        $_SERVER['HTTPS'] = null;
+
+        $app = new class extends App {
+            public array $allowedHostnames = ['127.0.0.1'];
+        };
+
+        $this->assertStringContainsString('127.0.0.1:8097', $app->baseURL);
+    }
 }

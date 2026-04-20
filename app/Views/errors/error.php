@@ -4,4 +4,4 @@
  */
 ?>
 
-<div class="error"><?= esc($error) ?></div>
+<div class="utility-message utility-message-danger error"><?= esc($error) ?></div>

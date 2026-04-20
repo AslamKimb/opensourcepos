@@ -34,11 +34,12 @@ if (isset($success)) {
 }
 ?>
 
+<div class="register-layout">
 <div id="register_wrapper">
 
     <!-- Top register controls -->
 
-    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default transaction-panel']) ?>
 
     <div class="panel-body form-group">
         <ul>
@@ -73,7 +74,7 @@ if (isset($success)) {
 
     <?= form_close() ?>
 
-    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default']) ?>
+    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default transaction-panel']) ?>
 
     <div class="panel-body form-group">
         <ul>
@@ -103,6 +104,7 @@ if (isset($success)) {
 
     <!-- Receiving Items List -->
 
+    <div class="register-table-container">
     <table class="sales_table_100" id="register">
         <thead>
             <tr>
@@ -237,11 +239,12 @@ if (isset($success)) {
             ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <!-- Overall Receiving -->
 
-<div id="overall_sale" class="panel panel-default">
+<div id="overall_sale" class="panel panel-default transaction-panel">
     <div class="panel-body">
         <?php if (isset($supplier)) { ?>
 
@@ -428,6 +431,7 @@ if (isset($success)) {
             </div>
         <?php } ?>
     </div>
+</div>
 </div>
 
 <script type="text/javascript">
