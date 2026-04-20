@@ -74,4 +74,54 @@ class UiSelectorContractTest extends TestCase
         $this->assertStringContainsString('"state"', $peopleForm);
         $this->assertStringContainsString('"country"', $peopleForm);
     }
+
+    public function testModernUiRefreshKeepsSharedPageFamilyHooks(): void
+    {
+        $header = file_get_contents(__DIR__ . '/../../app/Views/partial/header.php');
+        $home = file_get_contents(__DIR__ . '/../../app/Views/home/home.php');
+        $office = file_get_contents(__DIR__ . '/../../app/Views/home/office.php');
+        $themeCss = file_get_contents(__DIR__ . '/../../public/css/theme-utilitarian.css');
+        $appCss = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+        $registerCss = file_get_contents(__DIR__ . '/../../public/css/register.css');
+        $reportsCss = file_get_contents(__DIR__ . '/../../public/css/reports.css');
+        $invoiceCss = file_get_contents(__DIR__ . '/../../public/css/invoice.css');
+        $receiptCss = file_get_contents(__DIR__ . '/../../public/css/receipt.css');
+
+        $this->assertNotFalse($header);
+        $this->assertNotFalse($home);
+        $this->assertNotFalse($office);
+        $this->assertNotFalse($themeCss);
+        $this->assertNotFalse($appCss);
+        $this->assertNotFalse($registerCss);
+        $this->assertNotFalse($reportsCss);
+        $this->assertNotFalse($invoiceCss);
+        $this->assertNotFalse($receiptCss);
+
+        $this->assertStringContainsString('class="ospos-app"', $header);
+        $this->assertStringContainsString('class="wrapper app-shell"', $header);
+        $this->assertStringContainsString('app-navbar', $header);
+        $this->assertStringContainsString('module-grid', $home);
+        $this->assertStringContainsString('module-grid', $office);
+
+        $this->assertStringContainsString('--ui-bg:', $themeCss);
+        $this->assertStringContainsString('--ui-surface:', $themeCss);
+        $this->assertStringContainsString('--ui-accent:', $themeCss);
+        $this->assertStringContainsString('.fixed-table-container', $themeCss);
+        $this->assertStringContainsString('.bootstrap-dialog', $themeCss);
+        $this->assertStringContainsString('.nav-tabs', $themeCss);
+
+        $this->assertStringContainsString('.module-grid', $appCss);
+        $this->assertStringContainsString('#table_holder', $appCss);
+        $this->assertStringContainsString('.utility-message', $appCss);
+
+        $this->assertStringContainsString('.register-layout', $registerCss);
+        $this->assertStringContainsString('.transaction-panel', $registerCss);
+        $this->assertStringContainsString('.sales_table_100', $registerCss);
+
+        $this->assertStringContainsString('.report-card', $reportsCss);
+        $this->assertStringContainsString('#report_summary', $reportsCss);
+
+        $this->assertStringContainsString('#page-wrap', $invoiceCss);
+        $this->assertStringContainsString('#receipt_wrapper', $receiptCss);
+    }
 }

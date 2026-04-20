@@ -9,8 +9,8 @@ class TopbarLayoutTest extends TestCase
 		$header = file_get_contents(__DIR__ . '/../../app/Views/partial/header.php');
 
 		$this->assertStringContainsString('class="container topbar-row"', $header);
-		$this->assertStringContainsString('class="navbar-right topbar-actions"', $header);
-		$this->assertStringContainsString('class="navbar-center topbar-company"', $header);
+		$this->assertStringContainsString('class="navbar-right topbar-item topbar-actions"', $header);
+		$this->assertStringContainsString('class="navbar-center topbar-item topbar-company"', $header);
 		$this->assertStringNotContainsString('style="margin: 0;"', $header);
 		$this->assertStringNotContainsString('style="text-align: center;"', $header);
 	}

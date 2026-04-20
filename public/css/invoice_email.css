@@ -14,6 +14,7 @@
 }
 
 body {
+    color: #17212f;
     font-family: DejaVu Sans, Helvetica, Sans-Serif;
     font-size: 13px;
 }
@@ -34,6 +35,7 @@ pre {
 
 #page-wrap table {
     border-collapse: collapse;
+    color: #17212f;
 }
 
 #page-wrap table#items td {
@@ -50,12 +52,12 @@ pre {
     height: 30px;
     width: 100%;
     margin: 20px 0;
-    background-color: #222222;
+    background-color: #14324a;
     text-align: center;
     color: white;
     font-weight: bold;
     font-size: 26px;
-    letter-spacing: 4px;
+    letter-spacing: 0;
     padding: 8px 0px;
 }
 
@@ -148,7 +150,8 @@ pre {
 
 #meta td.meta-head {
     text-align: left;
-    background: #eee;
+    background: #e8eef5;
+    font-weight: bold;
 }
 
 #meta-content {
@@ -161,7 +164,9 @@ pre {
 }
 
 #items th {
-    background: #eee;
+    background: #e8eef5;
+    color: #17212f;
+    font-weight: bold;
 }
 
 #items tr.item-row td {
@@ -198,7 +203,7 @@ pre {
 }
 
 #items td.balance {
-    background: #eeeeee;
+    background: #dff4f1;
 }
 
 #items td.blank {
@@ -212,7 +217,7 @@ pre {
 
 #terms h5 {
     border-bottom: 1px solid black;
-    font: 13px DejaVu Sans, Helvetica, Sans-Serif;
+    font: bold 13px DejaVu Sans, Helvetica, Sans-Serif;
     padding: 8px 0;
     margin: 8px 0;
     line-height: 1.3em;

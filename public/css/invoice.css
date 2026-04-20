@@ -1,23 +1,17 @@
-/*
-     CSS-Tricks Example
-     by Chris Coyier
-     http://css-tricks.com
-*/
-
-/* body {
- *     font: 14px/1.4 Georgia, serif;
- * }
- */
-
 #page-wrap {
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-lg);
+    box-shadow: var(--ui-elevation-1);
+    margin: var(--ui-space-4) auto;
+    max-width: 860px;
+    padding: var(--ui-space-5);
     width: 100%;
-    margin: 0 auto;
-    max-width: 800px;
 }
 
 #page-wrap textarea {
     border: none;
-    font-size: 14px;
+    font-size: var(--ui-font-size-md);
     overflow: hidden;
     resize: none;
 }
@@ -28,34 +22,38 @@
 
 #page-wrap table td,
 #page-wrap table th {
-    border: 1px solid black;
-    padding: 5px;
+    border: 1px solid var(--ui-border-color);
+    padding: var(--ui-space-2);
 }
 
-#page-wrap table td {
-    padding: 5px;
+#page-wrap table th {
+    background: var(--ui-surface-strong);
+    color: var(--ui-text);
+    font-size: var(--ui-font-size-xs);
+    font-weight: 800;
+    text-transform: uppercase;
 }
 
 #header {
-    margin: 20px 0;
-    background: #222;
+    background: #14324a;
+    border-radius: var(--ui-radius-md);
+    color: #fff;
+    font-size: var(--ui-font-size-2xl);
+    font-weight: 800;
+    letter-spacing: 0;
+    margin: 0 0 var(--ui-space-5);
+    padding: var(--ui-space-3) 0;
     text-align: center;
-    color: white;
-    font-size: 2.0em;
-    font-weight: bold;
-    letter-spacing: 4px;
-    padding: 10px 0;
 }
 
-/* First row */
 #logo {
-    text-align: right;
-    margin-top: 15px;
+    border: 1px solid transparent;
     float: left;
-    position: relative;
-    border: 1px solid #fff;
+    margin-top: var(--ui-space-3);
     max-height: 150px;
     overflow: hidden;
+    position: relative;
+    text-align: right;
 }
 
 #logo img {
@@ -63,35 +61,28 @@
     max-width: 270px;
 }
 
-/* #logo:hover,
- * #logo.edit {
- *     border: 1px solid #000;
- *     margin-top: 0px;
- *     max-height: 125px;
- * }
- */
 #logoctr {
     display: none;
 }
 
 #logo:hover #logoctr,
 #logo.edit #logoctr {
+    background: var(--ui-surface-muted);
     display: block;
-    text-align: right;
     line-height: 25px;
-    background: #eee;
-    padding: 0 5px;
+    padding: 0 var(--ui-space-2);
+    text-align: right;
 }
 
 #logohelp {
-    text-align: left;
     display: none;
     font-style: italic;
-    padding: 10px 5px;
+    padding: var(--ui-space-3) var(--ui-space-2);
+    text-align: left;
 }
 
 #logohelp input {
-    margin-bottom: 5px;
+    margin-bottom: var(--ui-space-2);
 }
 
 .edit #logohelp {
@@ -112,16 +103,15 @@
 }
 
 #customer-title {
-    height: 100px;
     float: right;
-    margin-top: 40px;
+    height: 100px;
+    margin-top: var(--ui-space-5);
 }
 
 #customer-title textarea {
     width: 200px;
 }
 
-/* Second row */
 #block2 {
     overflow: hidden;
     width: 100%;
@@ -132,9 +122,9 @@
 }
 
 #meta {
+    float: right;
     margin-top: 1px;
     width: 300px;
-    float: right;
 }
 
 #meta td {
@@ -142,31 +132,32 @@
 }
 
 #meta td.meta-head {
+    background: var(--ui-surface-strong);
+    font-weight: 800;
     text-align: left;
-    background: #eee;
 }
 
 #meta td textarea {
-    width: 100%;
     height: 20px;
     text-align: right;
+    width: 100%;
 }
 
 #items {
+    border: 1px solid var(--ui-border-color);
     clear: both;
+    margin: var(--ui-space-5) 0 0;
     width: 100%;
-    margin: 30px 0 0 0;
-    border: 1px solid black;
 }
 
 #items th {
-    background: #eee;
+    background: var(--ui-surface-strong);
     text-align: center;
 }
 
 #items textarea {
-    width: 80px;
     height: 20px;
+    width: 80px;
 }
 
 #items tr.item-row td {
@@ -182,39 +173,39 @@
     width: 175px;
 }
 
-#items td.item-description textarea {
-    height: auto;
-    width: 100%;
-}
-
+#items td.item-description textarea,
 #items td.description textarea,
 #items td.item-name textarea {
     width: 100%;
 }
 
+#items td.item-description textarea {
+    height: auto;
+}
+
 #items td.total-line {
     border-right: 0;
+    font-weight: 800;
     text-align: right;
 }
 
 #items td.total-value {
     border-left: 0;
-    padding: 10px;
+    padding: var(--ui-space-3);
 }
 
-#items td.total-value textarea {
-    height: 20px;
+#items td.total-value textarea,
+#items td.total-line textarea {
     background: none;
+    height: 20px;
 }
 
 #items td.total-line textarea {
-    height: 20px;
     width: 150px;
-    background: none;
 }
 
 #items td.balance {
-    background: #eee;
+    background: var(--ui-accent-soft);
 }
 
 #items td.blank {
@@ -226,22 +217,23 @@
 }
 
 #terms {
+    margin: var(--ui-space-5) 0 0;
     text-align: center;
-    margin: 20px 0 0 0;
 }
 
 #terms h5 {
+    border-bottom: 1px solid var(--ui-border-color);
+    font-size: var(--ui-font-size-sm);
+    font-weight: 800;
+    letter-spacing: 0;
+    margin: 0 0 var(--ui-space-2);
+    padding: 0 0 var(--ui-space-2);
     text-transform: uppercase;
-    font-size: 13px;
-    letter-spacing: 10px;
-    border-bottom: 1px solid black;
-    padding: 0 0 8px 0;
-    margin: 0 0 8px 0;
 }
 
 #terms textarea {
-    width: 100%;
     text-align: center;
+    width: 100%;
 }
 
 .delete-wpr {
@@ -249,16 +241,26 @@
 }
 
 .delete {
+    background: var(--ui-surface-strong);
+    border: 1px solid var(--ui-border-color-strong);
+    color: var(--ui-text);
     display: block;
-    color: #000;
-    text-decoration: none;
-    position: absolute;
-    background: #EEEEEE;
-    font-weight: bold;
-    padding: 0px 3px;
-    border: 1px solid;
-    top: -6px;
-    left: -22px;
-    font-family: Verdana;
+    font-family: Verdana, sans-serif;
     font-size: 12px;
+    font-weight: bold;
+    left: -22px;
+    padding: 0 3px;
+    position: absolute;
+    text-decoration: none;
+    top: -6px;
+}
+
+@media print {
+    #page-wrap {
+        border: 0;
+        box-shadow: none;
+        margin: 0;
+        max-width: none;
+        padding: 0;
+    }
 }

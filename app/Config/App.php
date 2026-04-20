@@ -73,7 +73,7 @@ class App extends BaseConfig
      *
      * @var list<string>
      */
-    public array $allowedHostnames = [];
+    public array $allowedHostnames = ['localhost', '127.0.0.1'];
 
     /**
      * --------------------------------------------------------------------------
@@ -310,6 +310,14 @@ class App extends BaseConfig
     private function getValidHost(): string
     {
         $httpHost = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $hostName = parse_url('//' . $httpHost, PHP_URL_HOST);
+        $port = parse_url('//' . $httpHost, PHP_URL_PORT);
+
+        if ($hostName === false || $hostName === null) {
+            $hostName = $httpHost;
+        }
+
+        $validatedHost = $port === null ? $hostName : $hostName . ':' . $port;
 
         if (empty($this->allowedHostnames)) {
             log_message('warning', 
@@ -321,8 +329,11 @@ class App extends BaseConfig
             return 'localhost';
         }
 
-        if (in_array($httpHost, $this->allowedHostnames, true)) {
-            return $httpHost;
+        if (
+            in_array($validatedHost, $this->allowedHostnames, true)
+            || in_array($hostName, $this->allowedHostnames, true)
+        ) {
+            return $validatedHost;
         }
 
         log_message('warning', 

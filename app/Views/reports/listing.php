@@ -27,9 +27,9 @@ if (isset($error)) {
 }
 ?>
 
-<div class="row">
+<div class="row reports-listing">
     <div class="col-md-4">
-        <div class="panel panel-primary">
+        <div class="panel panel-primary report-card">
             <div class="panel-heading">
                 <h3 class="panel-title"><span class="glyphicon glyphicon-stats">&nbsp;</span><?= lang('Reports.graphical_reports') ?></h3>
             </div>
@@ -48,7 +48,7 @@ if (isset($error)) {
     </div>
 
     <div class="col-md-4">
-        <div class="panel panel-primary">
+        <div class="panel panel-primary report-card">
             <div class="panel-heading">
                 <h3 class="panel-title"><span class="glyphicon glyphicon-list">&nbsp;</span><?= lang('Reports.summary_reports') ?></h3>
             </div>
@@ -67,7 +67,7 @@ if (isset($error)) {
     </div>
 
     <div class="col-md-4">
-        <div class="panel panel-primary">
+        <div class="panel panel-primary report-card">
             <div class="panel-heading">
                 <h3 class="panel-title"><span class="glyphicon glyphicon-list-alt">&nbsp;</span><?= lang('Reports.detailed_reports') ?></h3>
             </div>
@@ -85,7 +85,7 @@ if (isset($error)) {
         </div>
 
         <?php if (in_array('reports_inventory', $permission_ids, true)) { ?>
-            <div class="panel panel-primary">
+            <div class="panel panel-primary report-card">
                 <div class="panel-heading">
                     <h3 class="panel-title"><span class="glyphicon glyphicon-book">&nbsp;</span><?= lang('Reports.inventory_reports') ?></h3>
                 </div>

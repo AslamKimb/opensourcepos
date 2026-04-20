@@ -61,10 +61,11 @@ if (isset($success)) {
 helper('url');
 ?>
 
+<div class="register-layout">
 <div id="register_wrapper">
 
     <!-- Top register controls -->
-    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default']) ?>
+    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default transaction-panel']) ?>
         <div class="panel-body form-group">
             <ul>
                 <li class="pull-left first_li">
@@ -115,7 +116,7 @@ helper('url');
 
     <?php $tabindex = 0; ?>
 
-    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default']) ?>
+    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default transaction-panel']) ?>
         <div class="panel-body form-group">
             <ul>
                 <li class="pull-left first_li">
@@ -137,6 +138,7 @@ helper('url');
 
     <!-- Sale Items List -->
 
+    <div class="register-table-container">
     <table class="sales_table_100" id="register">
         <thead>
             <tr>
@@ -287,11 +289,12 @@ helper('url');
             ?>
         </tbody>
     </table>
+    </div>
 </div>
 
 <!-- Overall Sale -->
 
-<div id="overall_sale" class="panel panel-default">
+<div id="overall_sale" class="panel panel-default transaction-panel">
     <div class="panel-body">
         <?= form_open("$controller_name/selectCustomer", ['id' => 'select_customer_form', 'class' => 'form-horizontal']) ?>
             <?php if (isset($customer)) { ?>
@@ -562,6 +565,7 @@ helper('url');
         }
         ?>
     </div>
+</div>
 </div>
 
 <script type="text/javascript">

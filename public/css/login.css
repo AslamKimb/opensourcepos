@@ -4,6 +4,9 @@ html {
 }
 
 body {
+    background:
+        linear-gradient(135deg, rgba(15, 37, 55, 0.08), rgba(15, 118, 110, 0.08)),
+        var(--ui-bg);
     min-height: 100vh;
     min-height: -webkit-fill-available; /* Prevent mobile webkit browsers from dropping footer behind the navigation bar */
 }
@@ -14,11 +17,18 @@ body {
 }
 
 .container-login {
+    border: 1px solid var(--ui-border-color);
     min-height: 25.3125rem;
+    overflow: hidden;
 }
 
 .box-logo {
+    background: #14324a;
     width: 40%;
+}
+
+.box-logo svg.logo {
+    color: #e8f2ff !important;
 }
 
 .logo {
@@ -35,8 +45,17 @@ img.logo {
     width: 60%;
 }
 
+.box-login h3 {
+    color: var(--ui-text);
+    font-weight: 800;
+}
+
 .box-login form {
     width: 100%; /* Login box content full width */
+}
+
+.box-login .btn-primary {
+    font-weight: 800;
 }
 
 .box-login .form-floating:focus-within,
@@ -67,6 +86,10 @@ img.logo {
 
 footer a:not(:hover) {
     text-decoration: none;
+}
+
+.footer {
+    border: 1px solid var(--ui-border-color);
 }
 
 /* Mobile Styling */
