@@ -194,7 +194,7 @@ class Config extends Secure_Controller
     }
 
     /**
-     * This function loads all the available themes in the dist/bootswatch directory
+     * This function loads all the available themes in the dist/bootswatch5 directory
      * @return array
      */
     private function _themes(): array    // TODO: Hungarian notation
@@ -202,7 +202,7 @@ class Config extends Secure_Controller
         $themes = [];
 
         // Read all themes in the dist folder
-        $dir = new DirectoryIterator('resources/bootswatch');
+        $dir = new DirectoryIterator('resources/bootswatch5');
 
         foreach ($dir as $dirinfo) {    // TODO: $dirinfo doesn't follow naming convention
             if ($dirinfo->isDir() && !$dirinfo->isDot() && $dirinfo->getFileName() != 'fonts') {

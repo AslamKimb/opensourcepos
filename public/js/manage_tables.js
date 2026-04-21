@@ -129,6 +129,126 @@
         return $("#table td input:checkbox:checked").parents("tr");
     };
 
+    var add_role_class = function(column, role) {
+        var class_name = "ospos-mobile-" + role;
+        var classes = (column.class || "").split(/\s+/);
+
+        if ($.inArray(class_name, classes) === -1) {
+            classes.push(class_name);
+        }
+
+        column.class = $.trim(classes.join(" "));
+        return column;
+    };
+
+    var normalize_columns = function(columns) {
+        var text_count = 0;
+        var metric_count = 0;
+        var action_fields = {
+            edit: true,
+            email: true,
+            messages: true,
+            inventory: true,
+            stock: true,
+            invoice: true,
+            receipt: true
+        };
+
+        return $.map(columns || [], function(column) {
+            column = $.extend({}, column);
+            var field = (column.field || "").toString();
+            var title = $("<div>").html(column.title || "").text().replace(/\s+/g, " ").trim();
+            var field_key = field.toLowerCase();
+            var is_checkbox = column.checkbox === true;
+            var is_action = !is_checkbox && (action_fields[field_key] || !title.length);
+            var is_identifier = !is_checkbox && !is_action && /(^id$|[._]id$|_id$)/.test(field_key);
+            var is_metric = !is_checkbox && !is_action && /(amount|balance|cost|price|quantity|qty|total|due|paid|profit|tax|discount|percent|rate|value)/.test(field_key);
+            var role = column.mobileRole || "detail";
+            var order = column.mobileOrder;
+
+            if (!column.mobileRole) {
+                if (is_checkbox) {
+                    role = "selector";
+                    order = 0;
+                } else if (is_action) {
+                    role = "action";
+                    order = 90;
+                } else if (is_identifier) {
+                    role = "identifier";
+                    order = 80;
+                } else if (is_metric) {
+                    role = "metric";
+                    order = 40 + metric_count++;
+                } else if (title.length) {
+                    role = text_count === 0 ? "primary" : "secondary";
+                    order = text_count === 0 ? 10 : 20 + text_count;
+                    text_count++;
+                }
+            }
+
+            column.mobileRole = role;
+            column.mobileOrder = order !== undefined ? order : 60;
+            column.cardVisible = column.cardVisible !== undefined ? column.cardVisible : role !== "identifier";
+            return add_role_class(column, role);
+        });
+    };
+
+    var get_normalized_columns = function() {
+        var instance = table();
+        var columns = instance && instance.options && instance.options.columns ? instance.options.columns : options.headers;
+
+        if ($.isArray(columns) && $.isArray(columns[0])) {
+            columns = columns[0];
+        }
+
+        return columns || [];
+    };
+
+    var apply_mobile_card_layout = function() {
+        var columns = get_normalized_columns();
+
+        $("#table").closest(".fixed-table-container").find("tbody tr").each(function() {
+            var $row = $(this);
+            var $cards = $row.find(".card-view");
+
+            if (!$cards.length) {
+                return;
+            }
+
+            $row.addClass("ospos-card-row");
+            $cards.each(function(index) {
+                var $card = $(this);
+                var column = columns[index] || {};
+                var role = column.mobileRole || "detail";
+
+                $card
+                    .addClass("ospos-card-item")
+                    .addClass("ospos-card-" + role)
+                    .css("order", column.mobileOrder || 60);
+
+                if (column.cardVisible === false) {
+                    $card.addClass("ospos-card-hidden");
+                }
+
+                if (role === "action" || role === "selector") {
+                    $card.find(".title").attr("aria-hidden", "true");
+                }
+            });
+
+            var $actions = $row.find(".ospos-card-action");
+            if ($actions.length && !$actions.parent().hasClass("ospos-card-actions")) {
+                $actions.wrapAll('<div class="ospos-card-actions"></div>');
+            }
+        });
+    };
+
+    var mark_scroll_containers = function() {
+        $("#table_holder, .register-table-container, .report-table-container").each(function() {
+            var is_scrollable = this.scrollWidth > this.clientWidth + 1;
+            $(this).toggleClass("is-scrollable", is_scrollable);
+        });
+    };
+
     var row_selector = function(id) {
         return "tr[data-uniqueid='" + id + "']";
     };
@@ -205,12 +325,16 @@
 
     var init = function (_options) {
         options = _options;
+        options.headers = normalize_columns(options.headers);
         enable_actions = enable_actions(options.enableActions);
         load_success = load_success(options.onLoadSuccess);
+        var post_body = options.onPostBody;
         const export_suffix = new Date().toISOString().slice(0, 16).replace(/(-|\s*|T|:)*/g,"");
         $('#table')
+            .addClass("table")
             .addClass("table-striped")
             .addClass("table-bordered")
+            .addClass("table-hover")
             .bootstrapTable($.extend(options, {
             columns: options.headers,
             stickyHeader: true,
@@ -222,6 +346,9 @@
             search: options.resource || false,
             showColumns: true,
             clickToSelect: true,
+            mobileResponsive: true,
+            checkOnInit: true,
+            minWidth: 768,
             showExport: true,
             exportDataType: 'basic',
             exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
@@ -242,6 +369,13 @@
             onLoadSuccess: function(response) {
                 load_success(response);
                 enable_actions();
+                apply_mobile_card_layout();
+                mark_scroll_containers();
+            },
+            onPostBody: function(data) {
+                apply_mobile_card_layout();
+                mark_scroll_containers();
+                typeof post_body == 'function' && post_body.call(this, data);
             },
             onColumnSwitch : function(field, checked) {
                 var user_settings = localStorage[options.employee_id];
@@ -253,6 +387,18 @@
             },
             queryParamsType: 'limit',
             iconSize: 'sm',
+            iconsPrefix: 'bi',
+            icons: {
+                paginationSwitchDown: 'bi-caret-down-square',
+                paginationSwitchUp: 'bi-caret-up-square',
+                refresh: 'bi-arrow-clockwise',
+                toggleOff: 'bi-toggle-off',
+                toggleOn: 'bi-toggle-on',
+                columns: 'bi-list-check',
+                export: 'bi-download',
+                detailOpen: 'bi-plus',
+                detailClose: 'bi-dash'
+            },
             silentSort: true,
             paginationVAlign: 'bottom',
             escape: true
@@ -262,6 +408,7 @@
         init_restore();
         toggle_column_visibility();
         dialog_support.init("button.modal-dlg");
+        $(window).off("resize.osposTableSupport").on("resize.osposTableSupport", mark_scroll_containers);
     };
 
     var init_delete = function (confirmMessage) {
@@ -326,6 +473,8 @@
         refresh : refresh,
         selected_ids : selected_ids,
     });
+
+    $(window).on("load resize.osposScrollContainers", mark_scroll_containers);
 
 })(window.table_support = window.table_support || {}, jQuery);
 

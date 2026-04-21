@@ -17,23 +17,23 @@
 <?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'customer_form', 'class' => 'form-horizontal']) ?>
 
     <ul class="nav nav-tabs nav-justified" data-tabs="tabs">
-        <li class="active" role="presentation">
-            <a data-toggle="tab" href="#customer_basic_info"><?= lang('Customers.basic_information') ?></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" data-bs-toggle="tab" href="#customer_basic_info"><?= lang('Customers.basic_information') ?></a>
         </li>
         <?php if (!empty($stats)) { ?>
-            <li role="presentation">
-                <a data-toggle="tab" href="#customer_stats_info"><?= lang('Customers.stats_info') ?></a>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-bs-toggle="tab" href="#customer_stats_info"><?= lang('Customers.stats_info') ?></a>
             </li>
         <?php } ?>
         <?php if (!empty($mailchimp_info) && !empty($mailchimp_activity)) { ?>
-            <li role="presentation">
-                <a data-toggle="tab" href="#customer_mailchimp_info"><?= lang('Customers.mailchimp_info') ?></a>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-bs-toggle="tab" href="#customer_mailchimp_info"><?= lang('Customers.mailchimp_info') ?></a>
             </li>
         <?php } ?>
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="customer_basic_info">
+        <div class="tab-pane fade show active" id="customer_basic_info">
             <fieldset>
                 <div class="form-group form-group-sm">
                     <?= form_label(lang('Customers.consent'), 'consent', ['class' => 'required control-label col-xs-3']) ?>

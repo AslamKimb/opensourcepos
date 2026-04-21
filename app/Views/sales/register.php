@@ -72,14 +72,14 @@ helper('url');
                     <label class="control-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
                 </li>
                 <li class="pull-left">
-                    <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                    <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'form-select form-select-sm']) ?>
                 </li>
                 <?php if ($config['dinner_table_enable']) { ?>
                     <li class="pull-left first_li">
                         <label class="control-label"><?= lang(ucfirst($controller_name) . '.table') ?></label>
                     </li>
                     <li class="pull-left">
-                        <?= form_dropdown('dinner_table', $empty_tables, $selected_table, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                        <?= form_dropdown('dinner_table', $empty_tables, $selected_table, ['onchange' => "$('#mode_form').submit();", 'class' => 'form-select form-select-sm']) ?>
                     </li>
                 <?php } ?>
                 <?php if (count($stock_locations) > 1) { ?>
@@ -87,7 +87,7 @@ helper('url');
                         <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_location') ?></label>
                     </li>
                     <li class="pull-left">
-                        <?= form_dropdown('stock_location', $stock_locations, $stock_location, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                        <?= form_dropdown('stock_location', $stock_locations, $stock_location, ['onchange' => "$('#mode_form').submit();", 'class' => 'form-select form-select-sm']) ?>
                     </li>
                 <?php } ?>
 

@@ -8,7 +8,7 @@ use Config\OSPOS;
     </div>
 
     <div id="footer" class="app-footer">
-        <div class="jumbotron push-spaces footer-surface">
+        <div class="push-spaces footer-surface">
             <strong>
                 <?= lang('Common.copyrights', [date('Y')]) ?> ·
                 <a href="https://opensourcepos.org" target="_blank"><?= lang('Common.website') ?></a> ·

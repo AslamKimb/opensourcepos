@@ -25,7 +25,7 @@
     </div>
 </div>
 
-<div id="table_holder">
+<div id="table_holder" class="report-table-container">
     <table id="table"></table>
 </div>
 

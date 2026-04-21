@@ -1,12 +1,12 @@
 <div class="container-fluid">
 
-    <ul class="nav nav-tabs" id="SCTabs" data-toggle="tab">
-        <li class="active"><a href="#system_shortcuts" data-toggle="tab" title="<?= lang('Sales.key_system'); ?>"><?= lang('Sales.key_system'); ?></a></li>
-        <li><a href="#browser_shortcuts" data-toggle="tab" title="<?= lang('Sales.key_browser'); ?>"><?= lang('Sales.key_browser'); ?></a></li>
+    <ul class="nav nav-tabs" id="SCTabs">
+        <li class="nav-item"><a class="nav-link active" href="#system_shortcuts" data-bs-toggle="tab" title="<?= lang('Sales.key_system'); ?>"><?= lang('Sales.key_system'); ?></a></li>
+        <li class="nav-item"><a class="nav-link" href="#browser_shortcuts" data-bs-toggle="tab" title="<?= lang('Sales.key_browser'); ?>"><?= lang('Sales.key_browser'); ?></a></li>
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane active" id="system_shortcuts">
+        <div class="tab-pane fade show active" id="system_shortcuts">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>

@@ -33,6 +33,17 @@ function transform_headers_readonly(array $headers): string
 function transform_headers(array $headers, bool $readonly = false, bool $editable = true): string    // TODO: $array needs to be refactored to a new name.  Perhaps $headers?
 {
     $result = [];
+    $textColumnCount = 0;
+    $metricColumnCount = 0;
+    $actionFields = [
+        'edit',
+        'email',
+        'messages',
+        'inventory',
+        'stock',
+        'invoice',
+        'receipt'
+    ];
 
     if (!$readonly) {
         $headers = array_merge([['checkbox' => 'select', 'sortable' => false]], $headers);
@@ -44,15 +55,50 @@ function transform_headers(array $headers, bool $readonly = false, bool $editabl
 
     foreach ($headers as $element) {    // TODO: This might be clearer to refactor this to `foreach($headers as $header)`
         reset($element);
+        $field = key($element);
+        $title = current($element);
+        $fieldKey = strtolower((string) $field);
+        $titleText = trim(strip_tags((string) $title));
+        $isCheckbox = isset($element['checkbox']);
+        $isAction = !$isCheckbox && (in_array($fieldKey, $actionFields, true) || preg_match('(^$|&nbsp)', (string) $title));
+        $isIdentifier = !$isCheckbox && !$isAction && preg_match('/(^id$|[._]id$|_id$)/', $fieldKey);
+        $isMetric = !$isCheckbox && !$isAction && preg_match('/(amount|balance|cost|price|quantity|qty|total|due|paid|profit|tax|discount|percent|rate|value)/', $fieldKey);
+        $mobileRole = 'detail';
+        $mobileOrder = 60;
+        $cardVisible = true;
+
+        if ($isCheckbox) {
+            $mobileRole = 'selector';
+            $mobileOrder = 0;
+        } elseif ($isAction) {
+            $mobileRole = 'action';
+            $mobileOrder = 90;
+        } elseif ($isIdentifier) {
+            $mobileRole = 'identifier';
+            $mobileOrder = 80;
+            $cardVisible = false;
+        } elseif ($isMetric) {
+            $mobileRole = 'metric';
+            $mobileOrder = 40 + $metricColumnCount++;
+        } elseif ($titleText !== '') {
+            $mobileRole = $textColumnCount === 0 ? 'primary' : 'secondary';
+            $mobileOrder = $textColumnCount === 0 ? 10 : 20 + $textColumnCount;
+            $textColumnCount++;
+        }
+
+        $baseClass = $isCheckbox || preg_match('(^$|&nbsp)', (string) $title) ? 'print_hide' : '';
         $result[] = [
-            'field'      => key($element),
-            'title'      => current($element),
-            'switchable' => $element['switchable'] ?? !preg_match('(^$|&nbsp)', current($element)),
-            'escape'     => !preg_match("/(edit|email|messages|item_pic)/", key($element)) && !(isset($element['escape']) && !$element['escape']),
-            'sortable'   => $element['sortable'] ?? current($element) != '',
+            'field'      => $field,
+            'title'      => $title,
+            'switchable' => $element['switchable'] ?? !preg_match('(^$|&nbsp)', (string) $title),
+            'escape'     => !preg_match("/(edit|email|messages|item_pic)/", $field) && !(isset($element['escape']) && !$element['escape']),
+            'sortable'   => $element['sortable'] ?? $title != '',
             'checkbox'   => $element['checkbox'] ?? false,
-            'class'      => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
-            'sorter'     => $element['sorter'] ?? ''
+            'class'      => trim($baseClass . ' ospos-mobile-' . $mobileRole),
+            'sorter'     => $element['sorter'] ?? '',
+            'mobileRole' => $element['mobileRole'] ?? $mobileRole,
+            'mobileOrder' => $element['mobileOrder'] ?? $mobileOrder,
+            'cardVisible' => $element['cardVisible'] ?? $cardVisible
         ];
     }
 

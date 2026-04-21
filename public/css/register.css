@@ -65,7 +65,6 @@
     margin-left: 0 !important;
 }
 
-#mode_form ul.dropdown-menu.inner,
 #add_item_form ul.dropdown-menu.inner {
     display: block;
     margin-left: 0 !important;
@@ -90,8 +89,32 @@
 }
 
 .register-table-container {
+    position: relative;
     width: 100%;
     overflow-x: auto;
+    overscroll-behavior-x: contain;
+}
+
+.register-table-container::after {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), var(--ui-surface));
+    bottom: 0;
+    color: var(--ui-text-muted);
+    content: "Scroll";
+    font-size: var(--ui-font-size-xs);
+    font-weight: 800;
+    opacity: 0;
+    padding: var(--ui-space-2);
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    text-transform: uppercase;
+    top: 0;
+    transition: opacity 0.15s ease-in-out;
+    writing-mode: vertical-rl;
+}
+
+.register-table-container.is-scrollable::after {
+    opacity: 1;
 }
 
 .register-table-container #register {
@@ -211,6 +234,10 @@ input#amount_tendered:disabled {
     .register-table-container #register {
         min-width: 600px;
     }
+
+    .register-table-container::after {
+        opacity: 1;
+    }
 }
 
 @media (max-width: 767px) {
@@ -223,6 +250,7 @@ input#amount_tendered:disabled {
 
     #mode_form .btn,
     #add_item_form .btn,
+    #mode_form .form-select,
     #mode_form .bootstrap-select,
     #add_item_form .bootstrap-select,
     #add_item_form .form-control {

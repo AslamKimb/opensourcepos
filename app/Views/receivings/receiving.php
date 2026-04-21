@@ -47,7 +47,7 @@ if (isset($success)) {
                 <label class="control-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
             </li>
             <li class="pull-left">
-                <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                <?= form_dropdown('mode', $modes, $mode, ['onchange' => "$('#mode_form').submit();", 'class' => 'form-select form-select-sm']) ?>
             </li>
 
             <?php if ($show_stock_locations) { ?>
@@ -55,7 +55,7 @@ if (isset($success)) {
                     <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_source') ?></label>
                 </li>
                 <li class="pull-left">
-                    <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                    <?= form_dropdown('stock_source', $stock_locations, $stock_source, ['onchange' => "$('#mode_form').submit();", 'class' => 'form-select form-select-sm']) ?>
                 </li>
 
                 <?php if ($mode == 'requisition') { ?>
@@ -63,7 +63,7 @@ if (isset($success)) {
                         <label class="control-label"><?= lang(ucfirst($controller_name) . '.stock_destination') ?></label>
                     </li>
                     <li class="pull-left">
-                        <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'selectpicker show-menu-arrow', 'data-style' => 'btn-default btn-sm', 'data-width' => 'fit']) ?>
+                        <?= form_dropdown('stock_destination', $stock_locations, $stock_destination, ['onchange' => "$('#mode_form').submit();", 'class' => 'form-select form-select-sm']) ?>
                     </li>
             <?php
                 }

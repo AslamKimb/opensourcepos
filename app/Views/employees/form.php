@@ -14,19 +14,19 @@
 <?= form_open("$controller_name/save/$person_info->person_id", ['id' => 'employee_form', 'class' => 'form-horizontal']) ?>
 
     <ul class="nav nav-tabs nav-justified" data-tabs="tabs">
-        <li class="active" role="presentation">
-            <a data-toggle="tab" href="#employee_basic_info"><?= lang('Employees.basic_information') ?></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" data-bs-toggle="tab" href="#employee_basic_info"><?= lang('Employees.basic_information') ?></a>
         </li>
-        <li role="presentation">
-            <a data-toggle="tab" href="#employee_login_info"><?= lang('Employees.login_info') ?></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#employee_login_info"><?= lang('Employees.login_info') ?></a>
         </li>
-        <li role="presentation">
-            <a data-toggle="tab" href="#employee_permission_info"><?= lang('Employees.permission_info') ?></a>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#employee_permission_info"><?= lang('Employees.permission_info') ?></a>
         </li>
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="employee_basic_info">
+        <div class="tab-pane fade show active" id="employee_basic_info">
             <fieldset>
                 <?= view('people/form_basic_info') ?>
             </fieldset>

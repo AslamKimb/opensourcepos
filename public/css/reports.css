@@ -6,6 +6,36 @@
     align-items: stretch;
 }
 
+.report-table-container {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    position: relative;
+}
+
+.report-table-container::after {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), var(--ui-surface));
+    bottom: 0;
+    color: var(--ui-text-muted);
+    content: "Scroll";
+    font-size: var(--ui-font-size-xs);
+    font-weight: 800;
+    opacity: 0;
+    padding: var(--ui-space-2);
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    text-transform: uppercase;
+    top: 0;
+    transition: opacity 0.15s ease-in-out;
+    writing-mode: vertical-rl;
+}
+
+.report-table-container.is-scrollable::after {
+    opacity: 1;
+}
+
 .report-card {
     border-color: var(--ui-border-color);
     min-height: 100%;
@@ -108,4 +138,18 @@
     r: 7;
     stroke-opacity: 0.2;
     stroke-width: 20px;
+}
+
+@media (max-width: 767px) {
+    #report_summary,
+    #chart_report_summary {
+        align-items: stretch;
+        display: grid;
+        grid-template-columns: 1fr;
+        padding: var(--ui-space-3);
+    }
+
+    .report-table-container::after {
+        opacity: 1;
+    }
 }
