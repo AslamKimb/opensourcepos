@@ -33,10 +33,10 @@
             <div class="form-group form-group-sm">
                 <?= form_label(lang('Config.company_logo'), 'company_logo', ['class' => 'control-label col-xs-2']) ?>
                 <div class="col-xs-6">
-                    <div class="fileinput <?= $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
-                        <div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
-                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
-                            <img data-src="holder.js/100%x100%" alt="<?= esc(lang('Config.company_logo')) ?>" src="<?= $logo_src ?>" style="max-height: 100%; max-width: 100%;">
+                    <div class="fileinput config-upload <?= $logo_exists ? 'fileinput-exists' : 'fileinput-new' ?>" data-provides="fileinput">
+                        <div class="fileinput-new thumbnail config-upload-preview config-upload-preview-logo"></div>
+                        <div class="fileinput-preview fileinput-exists thumbnail config-upload-preview config-upload-preview-logo">
+                            <img data-src="holder.js/100%x100%" alt="<?= esc(lang('Config.company_logo'), 'attr') ?>" src="<?= esc($logo_src, 'attr') ?>" class="config-upload-image">
                         </div>
                         <div>
                             <span class="btn btn-default btn-sm btn-file">

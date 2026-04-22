@@ -9,6 +9,19 @@
 use Config\Services;
 
 $request = Services::request();
+$brand_name = brand_display_name($config);
+$brand_short_name = brand_short_name($config);
+$current_module = $request->getUri()->getSegment(1);
+$current_module_label = $brand_short_name;
+$brand_logo = basename((string)($config['company_logo'] ?? ''));
+$brand_logo_src = $brand_logo !== '' ? base_url('uploads/' . rawurlencode($brand_logo)) : '';
+
+foreach ($allowed_modules as $module) {
+    if ($module->module_id === $current_module) {
+        $current_module_label = lang('Module.' . $module->module_id);
+        break;
+    }
+}
 ?>
 
 <!doctype html>
@@ -17,8 +30,9 @@ $request = Services::request();
 <head>
     <meta charset="utf-8">
     <base href="<?= base_url() ?>">
-    <title><?= esc($config['company']) . ' | ' . lang('Common.powered_by') . ' OSPOS ' . esc(config('App')->application_version) ?></title>
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <title><?= esc($brand_name) . ' | ' . esc($brand_short_name) ?></title>
+    <meta name="theme-color" content="<?= esc(brand_theme_color($config), 'attr') ?>">
+    <link rel="shortcut icon" type="image/x-icon" href="<?= esc(brand_favicon_href($config), 'attr') ?>">
     <link rel="stylesheet" href="<?= 'resources/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>">
     <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
         <!-- inject:debug:css -->
@@ -35,13 +49,13 @@ $request = Services::request();
         <link rel="stylesheet" href="resources/css/bootstrap-tagsinput-5a6d46a06c.css">
         <link rel="stylesheet" href="resources/css/bootstrap-toggle-e12db6c1f3.css">
         <link rel="stylesheet" href="resources/css/bootstrap-292fc0ad3b.autocomplete.css">
-        <link rel="stylesheet" href="resources/css/invoice-dee26b6e59.css">
-        <link rel="stylesheet" href="resources/css/ospos_print-c0b7ffee01.css">
-        <link rel="stylesheet" href="resources/css/ospos-80e1e0d77f.css">
+        <link rel="stylesheet" href="resources/css/invoice-c6cc6f6858.css">
+        <link rel="stylesheet" href="resources/css/ospos_print-4e428ab727.css">
+        <link rel="stylesheet" href="resources/css/ospos-d7ac5dbde0.css">
         <link rel="stylesheet" href="resources/css/popupbox-7b616030b0.css">
-        <link rel="stylesheet" href="resources/css/receipt-a73297b659.css">
-        <link rel="stylesheet" href="resources/css/register-21cbe0653e.css">
-        <link rel="stylesheet" href="resources/css/reports-cad9f887e3.css">
+        <link rel="stylesheet" href="resources/css/receipt-2ca96adfe5.css">
+        <link rel="stylesheet" href="resources/css/register-6eed5049ed.css">
+        <link rel="stylesheet" href="resources/css/reports-0f0856f305.css">
         <!-- endinject -->
         <!-- inject:debug:js -->
         <script src="resources/js/jquery-12e87d2f3a.js"></script>
@@ -76,12 +90,12 @@ $request = Services::request();
         <script src="resources/js/bootstrap-toggle-1c7a19a049.js"></script>
         <script src="resources/js/clipboard-908af414ab.js"></script>
         <script src="resources/js/imgpreview-62e42c15a0.full.jquery.js"></script>
-        <script src="resources/js/manage_tables-7a86e208b7.js"></script>
+        <script src="resources/js/manage_tables-0b70f19599.js"></script>
         <script src="resources/js/nominatim-599d9d6f9c.autocomplete.js"></script>
         <!-- endinject -->
     <?php else : ?>
         <!--inject:prod:css -->
-        <link rel="stylesheet" href="resources/opensourcepos-56fdbca3be.min.css">
+        <link rel="stylesheet" href="resources/opensourcepos-ab0a0fe596.min.css">
         <!-- endinject -->
 
         <!-- Tweaks to the UI for a particular theme should drop here  -->
@@ -90,11 +104,12 @@ $request = Services::request();
         <?php } ?>
         <!-- inject:prod:js -->
         <script src="resources/jquery-2c872dbe60.min.js"></script>
-        <script src="resources/opensourcepos-5d9546efb8.min.js"></script>
+        <script src="resources/opensourcepos-d0ba3302da.min.js"></script>
         <!-- endinject -->
     <?php endif; ?>
 
     <link rel="stylesheet" href="css/theme-utilitarian.css">
+    <?= view('partial/brand_css', ['config' => $config]) ?>
 
     <?= view('partial/header_js') ?>
     <?= view('partial/lang_lines') ?>
@@ -108,51 +123,81 @@ $request = Services::request();
 
 <body class="ospos-app">
     <div class="wrapper app-shell">
-        <div class="topbar">
-            <div class="container topbar-row">
-                <div class="navbar-left topbar-item topbar-clock">
-                    <div id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></div>
-                </div>
+        <header class="mobile-shellbar app-navbar" role="banner">
+            <button type="button" class="navbar-toggle collapsed app-menu-toggle" data-toggle="collapse" data-target="#app-navigation" aria-controls="app-navigation" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
 
-                <div class="navbar-right topbar-item topbar-actions">
-                    <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-                    <span>&nbsp;|&nbsp;</span>
-                    <?= anchor('home/logout', lang('Login.logout')) ?>
-                </div>
+            <a class="navbar-brand app-mobile-brand" href="<?= site_url() ?>">
+                <?php if ($brand_logo_src !== ''): ?>
+                    <img src="<?= esc($brand_logo_src, 'attr') ?>" alt="<?= esc($brand_short_name, 'attr') ?>">
+                <?php else: ?>
+                    <span class="brand-mark-fallback"><?= esc(brand_initial($config)) ?></span>
+                <?php endif; ?>
+                <span><?= esc($brand_short_name) ?></span>
+            </a>
 
-                <div class="navbar-center topbar-item topbar-company">
-                    <strong><?= esc($config['company']) ?></strong>
-                </div>
-            </div>
-        </div>
+            <?= anchor('home/logout', lang('Login.logout'), ['class' => 'app-mobile-logout']) ?>
+        </header>
 
-        <div class="navbar navbar-default app-navbar" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+        <div class="app-layout">
+            <aside class="navbar navbar-default app-navbar app-sidebar" role="navigation" aria-label="Primary navigation">
+                <a class="app-brand-panel" href="<?= site_url() ?>">
+                    <span class="app-brand-mark">
+                        <?php if ($brand_logo_src !== ''): ?>
+                            <img src="<?= esc($brand_logo_src, 'attr') ?>" alt="<?= esc($brand_short_name, 'attr') ?>">
+                        <?php else: ?>
+                            <?= esc(brand_initial($config)) ?>
+                        <?php endif; ?>
+                    </span>
+                    <span class="app-brand-copy">
+                        <strong><?= esc($brand_short_name) ?></strong>
+                        <small><?= esc($brand_name) ?></small>
+                    </span>
+                </a>
 
-                    <a class="navbar-brand hidden-sm" href="<?= site_url() ?>">OSPOS</a>
-                </div>
-
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right app-nav">
+                <div id="app-navigation" class="navbar-collapse collapse app-sidebar-collapse">
+                    <ul class="nav navbar-nav app-nav">
                         <?php foreach ($allowed_modules as $module): ?>
-                            <li class="<?= $module->module_id == $request->getUri()->getSegment(1) ? 'active' : '' ?>">
-                                <a href="<?= base_url($module->module_id) ?>" title="<?= lang("Module.$module->module_id") ?>" class="menu-icon">
-                                    <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" style="border: none;" alt="Module Icon"><br>
-                                    <?= lang('Module.' . $module->module_id) ?>
+                            <?php $is_active_module = $module->module_id === $current_module; ?>
+                            <li class="<?= $is_active_module ? 'active' : '' ?>">
+                                <a href="<?= base_url($module->module_id) ?>" title="<?= esc(lang('Module.' . $module->module_id), 'attr') ?>" class="menu-icon" <?= $is_active_module ? 'aria-current="page"' : '' ?>>
+                                    <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" alt="<?= esc(lang('Module.' . $module->module_id), 'attr') ?>">
+                                    <span><?= esc(lang('Module.' . $module->module_id)) ?></span>
                                 </a>
                             </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
-            </div>
-        </div>
 
-        <div class="container">
+                <div class="app-sidebar-account">
+                    <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg app-account-link', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
+                    <?= anchor('home/logout', lang('Login.logout'), ['class' => 'app-logout-link']) ?>
+                </div>
+            </aside>
+
+            <main class="app-main" role="main">
+                <div class="topbar app-commandbar">
+                    <div class="container topbar-row">
+                        <div class="navbar-left topbar-item topbar-clock">
+                            <div id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></div>
+                        </div>
+
+                        <div class="navbar-right topbar-item topbar-actions">
+                            <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
+                            <span>&nbsp;|&nbsp;</span>
+                            <?= anchor('home/logout', lang('Login.logout')) ?>
+                        </div>
+
+                        <div class="navbar-center topbar-item topbar-company">
+                            <strong><?= esc($current_module_label) ?></strong>
+                            <span><?= esc($config['company']) ?></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container app-content">
             <div class="row">

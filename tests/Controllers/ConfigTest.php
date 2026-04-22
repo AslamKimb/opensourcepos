@@ -2,6 +2,7 @@
 
 namespace Tests\Controllers;
 
+use App\Models\Appconfig;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\DatabaseTestTrait;
 use CodeIgniter\Test\FeatureTestTrait;
@@ -28,6 +29,69 @@ class ConfigTest extends CIUnitTestCase
         $session->destroy();
         $session->set('person_id', 1);
         $session->set('menu_group', 'office');
+    }
+
+    // ========== Runtime Branding Tests ==========
+
+    public function testSaveBrandingStoresRuntimeBrandSettings(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveBranding', [
+            'brand_short_name'      => 'BTC',
+            'brand_show_powered_by' => '1',
+            'brand_color_action'    => '0f766e',
+            'brand_color_warning'   => '#b7791f',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+
+        $appconfig = model(Appconfig::class);
+        $this->assertSame('BTC', $appconfig->get_value('brand_short_name'));
+        $this->assertSame('1', $appconfig->get_value('brand_show_powered_by'));
+        $this->assertSame('#0f766e', $appconfig->get_value('brand_color_action'));
+        $this->assertSame('#b7791f', $appconfig->get_value('brand_color_warning'));
+    }
+
+    public function testSaveBrandingRejectsInvalidHexColor(): void
+    {
+        $this->resetSession();
+
+        $response = $this->post('/config/saveBranding', [
+            'brand_short_name'   => 'BTC',
+            'brand_color_action' => 'not-a-color',
+        ]);
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('valid hex color', $result['message']);
+    }
+
+    public function testRemoveBrandFaviconClearsConfigAndDeletesFile(): void
+    {
+        $this->resetSession();
+
+        $uploadDir = FCPATH . 'uploads/branding/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0750, true);
+        }
+
+        $filename = 'test-brand-favicon.ico';
+        file_put_contents($uploadDir . $filename, 'ico');
+
+        $appconfig = model(Appconfig::class);
+        $appconfig->save(['brand_favicon' => $filename]);
+
+        $response = $this->post('/config/removeBrandFavicon');
+
+        $response->assertStatus(200);
+        $result = json_decode($response->getJSON(), true);
+        $this->assertTrue($result['success']);
+        $this->assertSame('', $appconfig->get_value('brand_favicon'));
+        $this->assertFileDoesNotExist($uploadDir . $filename);
     }
 
     // ========== Valid Mailpath Tests ==========

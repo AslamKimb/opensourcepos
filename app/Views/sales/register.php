@@ -61,12 +61,12 @@ if (isset($success)) {
 helper('url');
 ?>
 
-<div class="register-layout">
-<div id="register_wrapper">
+<div class="register-layout register-touch-shell">
+<div id="register_wrapper" class="register-workspace">
 
     <!-- Top register controls -->
-    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default transaction-panel']) ?>
-        <div class="panel-body form-group">
+    <?= form_open("$controller_name/changeMode", ['id' => 'mode_form', 'class' => 'form-horizontal panel panel-default transaction-panel register-control-strip']) ?>
+        <div class="panel-body form-group register-control-strip-body">
             <ul>
                 <li class="pull-left first_li">
                     <label class="control-label"><?= lang(ucfirst($controller_name) . '.mode') ?></label>
@@ -116,18 +116,18 @@ helper('url');
 
     <?php $tabindex = 0; ?>
 
-    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default transaction-panel']) ?>
-        <div class="panel-body form-group">
+    <?= form_open("$controller_name/add", ['id' => 'add_item_form', 'class' => 'form-horizontal panel panel-default transaction-panel register-scan-bar']) ?>
+        <div class="panel-body form-group register-scan-body">
             <ul>
                 <li class="pull-left first_li">
                     <label for="item" class="control-label"><?= lang(ucfirst($controller_name) . '.find_or_scan_item_or_receipt') ?></label>
                 </li>
                 <li class="pull-left">
-                    <?= form_input(['name' => 'item', 'id' => 'item', 'class' => 'form-control input-sm', 'size' => '50', 'tabindex' => ++$tabindex]) ?>
+                    <?= form_input(['name' => 'item', 'id' => 'item', 'class' => 'form-control input-sm register-scan-input', 'size' => '50', 'tabindex' => ++$tabindex]) ?>
                     <span class="ui-helper-hidden-accessible" role="status"></span>
                 </li>
                 <li class="pull-right">
-                    <button id="new_item_button" class="btn btn-info btn-sm pull-right modal-dlg" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_item") ?>">
+                    <button id="new_item_button" class="btn btn-info btn-sm pull-right modal-dlg register-inline-action" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/view" ?>" title="<?= lang(ucfirst($controller_name) . ".new_item") ?>">
                         <span class="glyphicon glyphicon-tag">&nbsp;</span><?= lang(ucfirst($controller_name) . ".new_item") ?>
                     </button>
                 </li>
@@ -138,8 +138,8 @@ helper('url');
 
     <!-- Sale Items List -->
 
-    <div class="register-table-container">
-    <table class="sales_table_100" id="register">
+    <div class="register-table-container register-cart-workspace">
+    <table class="sales_table_100 register-cart-table" id="register">
         <thead>
             <tr>
                 <th style="width: 5%;"><?= lang('Common.delete') ?></th>
@@ -155,8 +155,8 @@ helper('url');
 
         <tbody id="cart_contents">
             <?php if (count($cart) == 0) { ?>
-                <tr>
-                    <td colspan="8">
+                <tr class="register-cart-empty-row">
+                    <td colspan="8" data-label="<?= esc(lang(ucfirst($controller_name) . '.item_name'), 'attr') ?>">
                         <div class="alert alert-dismissible alert-info"><?= lang(ucfirst($controller_name) . '.no_items_in_cart') ?></div>
                     </td>
                 </tr>
@@ -164,9 +164,9 @@ helper('url');
             } else {
                 foreach (array_reverse($cart, true) as $line => $item) {
             ?>
-                    <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal', 'id' => "cart_$line"]) ?>
-                        <tr>
-                            <td>
+                    <?= form_open("$controller_name/editItem/$line", ['class' => 'form-horizontal register-cart-item-form', 'id' => "cart_$line"]) ?>
+                        <tr class="register-cart-row register-mobile-item-card">
+                            <td class="register-cart-action-cell" data-label="<?= esc(lang('Common.delete'), 'attr') ?>">
                                 <?php
                                 echo anchor("$controller_name/deleteItem/$line", '<span class="glyphicon glyphicon-trash"></span>');
                                 echo form_hidden('location', (string)$item['item_location']);
@@ -174,13 +174,13 @@ helper('url');
                                 ?>
                             </td>
                             <?php if ($item['item_type'] == ITEM_TEMP) { ?>
-                                <td><?= form_input(['name' => 'item_number', 'id' => 'item_number', 'class' => 'form-control input-sm', 'value' => $item['item_number'], 'tabindex' => ++$tabindex]) ?></td>
-                                <td style="align: center;">
+                                <td data-label="<?= esc(lang(ucfirst($controller_name) . '.item_number'), 'attr') ?>"><?= form_input(['name' => 'item_number', 'id' => 'item_number', 'class' => 'form-control input-sm', 'value' => $item['item_number'], 'tabindex' => ++$tabindex]) ?></td>
+                                <td class="register-cart-item-name" data-label="<?= esc(lang(ucfirst($controller_name) . '.item_name'), 'attr') ?>" style="align: center;">
                                     <?= form_input(['name' => 'name', 'id' => 'name', 'class' => 'form-control input-sm', 'value' => $item['name'], 'tabindex' => ++$tabindex]) ?>
                                 </td>
                             <?php } else { ?>
-                                <td><?= esc($item['item_number']) ?></td>
-                                <td style="align: center;">
+                                <td data-label="<?= esc(lang(ucfirst($controller_name) . '.item_number'), 'attr') ?>"><?= esc($item['item_number']) ?></td>
+                                <td class="register-cart-item-name" data-label="<?= esc(lang(ucfirst($controller_name) . '.item_name'), 'attr') ?>" style="align: center;">
                                     <?= esc($item['name']) . ' ' . implode(' ', [$item['attribute_values'], $item['attribute_dtvalues']]) ?>
                                     <br>
                                     <?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . esc($item['stock_name']) . ']';
@@ -188,7 +188,7 @@ helper('url');
                                 </td>
                             <?php } ?>
 
-                            <td>
+                            <td data-label="<?= esc(lang(ucfirst($controller_name) . '.price'), 'attr') ?>">
                                 <?php
                                 if ($items_module_allowed && $change_price) {
                                     echo form_input(['name' => 'price', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['price']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
@@ -199,7 +199,7 @@ helper('url');
                                 ?>
                             </td>
 
-                            <td>
+                            <td data-label="<?= esc(lang(ucfirst($controller_name) . '.quantity'), 'attr') ?>">
                                 <?php
                                 if ($item['is_serialized']) {
                                     echo to_quantity_decimals($item['quantity']);
@@ -210,7 +210,7 @@ helper('url');
                                 ?>
                             </td>
 
-                            <td>
+                            <td data-label="<?= esc(lang(ucfirst($controller_name) . '.discount'), 'attr') ?>">
                                 <div class="input-group">
                                     <?= form_input(['name' => 'discount', 'class' => 'form-control input-sm', 'value' => $item['discount_type'] ? to_currency_no_money($item['discount']) : to_decimals($item['discount']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']) ?>
                                     <span class="input-group-btn">
@@ -219,7 +219,7 @@ helper('url');
                                 </div>
                             </td>
 
-                            <td>
+                            <td class="register-cart-total-cell" data-label="<?= esc(lang(ucfirst($controller_name) . '.total'), 'attr') ?>">
                                 <?php
                                 if ($item['item_type'] == ITEM_AMOUNT_ENTRY) {    // TODO: === ?
                                     echo form_input(['name' => 'discounted_total', 'class' => 'form-control input-sm', 'value' => to_currency_no_money($item['discounted_total']), 'tabindex' => ++$tabindex, 'onClick' => 'this.select();']);
@@ -229,26 +229,26 @@ helper('url');
                                 ?>
                             </td>
 
-                            <td>
+                            <td class="register-cart-action-cell" data-label="<?= esc(lang(ucfirst($controller_name) . '.update'), 'attr') ?>">
                                 <a href="javascript:document.getElementById('<?= "cart_$line" ?>').submit();" title="<?= lang(ucfirst($controller_name) . '.update') ?>">
                                     <span class="glyphicon glyphicon-refresh"></span>
                                 </a>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="register-cart-meta-row">
                             <?php if ($item['item_type'] == ITEM_TEMP) { ?>
                                 <td><?= form_input(['type' => 'hidden', 'name' => 'item_id', 'value' => $item['item_id']]) ?></td>
-                                <td style="align: center;" colspan="6">
+                                <td data-label="<?= esc(lang(ucfirst($controller_name) . '.description_abbrv'), 'attr') ?>" style="align: center;" colspan="6">
                                     <?= form_input(['name' => 'item_description', 'id' => 'item_description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'tabindex' => ++$tabindex]) ?>
                                 </td>
                                 <td> </td>
                             <?php } else { ?>
                                 <td>&nbsp;</td>
                                 <?php if ($item['allow_alt_description']) { ?>
-                                    <td style="color: #2F4F4F;"><?= lang(ucfirst($controller_name) . '.description_abbrv') ?></td>
+                                    <td data-label="<?= esc(lang(ucfirst($controller_name) . '.description_abbrv'), 'attr') ?>" style="color: #2F4F4F;"><?= lang(ucfirst($controller_name) . '.description_abbrv') ?></td>
                                 <?php } ?>
 
-                                <td colspan="2" style="text-align: left;">
+                                <td data-label="<?= esc(lang(ucfirst($controller_name) . '.description_abbrv'), 'attr') ?>" colspan="2" style="text-align: left;">
                                     <?php
                                     if ($item['allow_alt_description']) {
                                         echo form_input(['name' => 'description', 'class' => 'form-control input-sm', 'value' => $item['description'], 'onClick' => 'this.select();']);
@@ -264,14 +264,14 @@ helper('url');
                                     ?>
                                 </td>
                                 <td>&nbsp;</td>
-                                <td style="color: #2F4F4F;">
+                                <td data-label="<?= esc(lang(ucfirst($controller_name) . '.serial'), 'attr') ?>" style="color: #2F4F4F;">
                                     <?php
                                     if ($item['is_serialized']) {
                                         echo lang(ucfirst($controller_name) . '.serial');
                                     }
                                     ?>
                                 </td>
-                                <td colspan="4" style="text-align: left;">
+                                <td data-label="<?= esc(lang(ucfirst($controller_name) . '.serial'), 'attr') ?>" colspan="4" style="text-align: left;">
                                     <?php
                                     if ($item['is_serialized']) {
                                         echo form_input(['name' => 'serialnumber', 'class' => 'form-control input-sm', 'value' => $item['serialnumber'], 'onClick' => 'this.select();']);
@@ -294,7 +294,7 @@ helper('url');
 
 <!-- Overall Sale -->
 
-<div id="overall_sale" class="panel panel-default transaction-panel">
+<div id="overall_sale" class="panel panel-default transaction-panel register-checkout-rail">
     <div class="panel-body">
         <?= form_open("$controller_name/selectCustomer", ['id' => 'select_customer_form', 'class' => 'form-horizontal']) ?>
             <?php if (isset($customer)) { ?>
@@ -372,7 +372,7 @@ helper('url');
             <?php } ?>
         <?= form_close() ?>
 
-        <table class="sales_table_100" id="sale_totals">
+        <table class="sales_table_100 register-sticky-totals" id="sale_totals">
             <tr>
                 <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.quantity_of_items', [$item_count]) ?></th>
                 <th style="width: 45%; text-align: right;"><?= $total_units ?></th>
@@ -394,7 +394,7 @@ helper('url');
         </table>
 
         <?php if (count($cart) > 0) { // Only show this part if there are Items already in the register ?>
-            <table class="sales_table_100" id="payment_totals">
+            <table class="sales_table_100 register-sticky-totals" id="payment_totals">
                 <tr>
                     <th style="width: 55%;"><?= lang(ucfirst($controller_name) . '.payments_total') ?></th>
                     <th style="width: 45%; text-align: right;"><?= to_currency($payments_total) ?></th>
@@ -405,7 +405,7 @@ helper('url');
                 </tr>
             </table>
 
-            <div id="payment_details">
+            <div id="payment_details" class="register-payment-panel">
                 <?php if ($payments_cover_total) { // Show Complete sale button instead of Add Payment if there is no amount due left ?>
                     <?= form_open("$controller_name/addPayment", ['id' => 'add_payment_form', 'class' => 'form-horizontal']) ?>
                         <table class="sales_table_100">
@@ -439,7 +439,7 @@ helper('url');
 
                         if (!$due_payment || ($due_payment && isset($customer))) {    // TODO: $due_payment is not needed because the first clause insures that it will always be true if it gets to this point.  Can be shortened to if (!$due_payment || isset($customer))
                     ?>
-                            <div class="btn btn-sm btn-success pull-right" id="finish_sale_button" tabindex="<?= ++$tabindex ?>">
+                            <div class="btn btn-sm btn-success pull-right register-action-primary" id="finish_sale_button" tabindex="<?= ++$tabindex ?>">
                                 <span class="glyphicon glyphicon-ok">&nbsp;</span><?= lang(ucfirst($controller_name) . '.complete_sale') ?>
                             </div>
                     <?php
@@ -465,13 +465,13 @@ helper('url');
                         </table>
                     <?= form_close() ?>
 
-                    <div class="btn btn-sm btn-success pull-right" id="add_payment_button" tabindex="<?= ++$tabindex ?>">
+                    <div class="btn btn-sm btn-success pull-right register-action-primary" id="add_payment_button" tabindex="<?= ++$tabindex ?>">
                         <span class="glyphicon glyphicon-credit-card">&nbsp;</span><?= lang(ucfirst($controller_name) . '.add_payment') ?>
                     </div>
                 <?php } ?>
 
                 <?php if (count($payments) > 0) { // Only show this part if there is at least one payment entered. ?>
-                    <table class="sales_table_100" id="register">
+                    <table class="sales_table_100 register-payment-history" id="register">
                         <thead>
                             <tr>
                                 <th style="width: 10%;"><?= lang('Common.delete') ?></th>
@@ -494,13 +494,13 @@ helper('url');
             </div>
 
             <?= form_open("$controller_name/cancel", ['id' => 'buttons_form']) ?>
-            <div class="form-group" id="buttons_sale">
-                <div class="btn btn-sm btn-default pull-left" id="suspend_sale_button"><span class="glyphicon glyphicon-align-justify">&nbsp;</span><?= lang(ucfirst($controller_name) . '.suspend_sale') ?></div>
+            <div class="form-group register-payment-action-zone" id="buttons_sale">
+                <div class="btn btn-sm btn-default pull-left register-action-secondary" id="suspend_sale_button"><span class="glyphicon glyphicon-align-justify">&nbsp;</span><?= lang(ucfirst($controller_name) . '.suspend_sale') ?></div>
                 <?php if (!$pos_mode && isset($customer)) { // Only show this part if the payment covers the total ?>
-                    <div class="btn btn-sm btn-success" id="finish_invoice_quote_button"><span class="glyphicon glyphicon-ok">&nbsp;</span><?= esc($mode_label) ?></div>
+                    <div class="btn btn-sm btn-success register-action-primary" id="finish_invoice_quote_button"><span class="glyphicon glyphicon-ok">&nbsp;</span><?= esc($mode_label) ?></div>
                 <?php } ?>
 
-                <div class="btn btn-sm btn-danger pull-right" id="cancel_sale_button"><span class="glyphicon glyphicon-remove">&nbsp;</span><?= lang(ucfirst($controller_name) . '.cancel_sale') ?></div>
+                <div class="btn btn-sm btn-danger pull-right register-action-danger" id="cancel_sale_button"><span class="glyphicon glyphicon-remove">&nbsp;</span><?= lang(ucfirst($controller_name) . '.cancel_sale') ?></div>
             </div>
             <?= form_close() ?>
 

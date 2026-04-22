@@ -76,56 +76,57 @@ use App\Models\Employee;
 
 <?= view('partial/table_filter_persistence', ['additional_params' => ['stock_location']]) ?>
 
-<div id="title_bar" class="btn-toolbar print_hide">
-    <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/csvImport" ?>" title="<?= lang('Items.import_items_csv') ?>">
-        <span class="glyphicon glyphicon-import">&nbsp;</span><?= lang('Common.import_csv') ?>
+<?php
+$primary_actions = '
+    <button class="btn btn-info btn-sm pull-right modal-dlg manage-table-action-secondary" data-btn-submit="' . esc(lang('Common.submit'), 'attr') . '" data-href="' . esc("$controller_name/csvImport", 'attr') . '" title="' . esc(lang('Items.import_items_csv'), 'attr') . '">
+        <span class="glyphicon glyphicon-import">&nbsp;</span>' . esc(lang('Common.import_csv')) . '
     </button>
+    <button class="btn btn-info btn-sm pull-right modal-dlg manage-table-action-primary" data-btn-new="' . esc(lang('Common.new'), 'attr') . '" data-btn-submit="' . esc(lang('Common.submit'), 'attr') . '" data-href="' . esc("$controller_name/view", 'attr') . '" title="' . esc(lang(ucfirst($controller_name) . '.new'), 'attr') . '">
+        <span class="glyphicon glyphicon-tag">&nbsp;</span>' . esc(lang(ucfirst($controller_name) . '.new')) . '
+    </button>';
 
-    <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-new="<?= lang('Common.new') ?>" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "$controller_name/view" ?>" title="<?= lang(ucfirst($controller_name) . '.new') ?>">
-        <span class="glyphicon glyphicon-tag">&nbsp;</span><?= lang(ucfirst($controller_name) . '.new') ?>
+$toolbar_actions = '
+    <button id="delete" class="btn btn-default btn-sm print_hide manage-table-action-danger">
+        <span class="glyphicon glyphicon-trash">&nbsp;</span>' . esc(lang('Common.delete')) . '
     </button>
-</div>
+    <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide manage-table-action-secondary" data-btn-submit="' . esc(lang('Common.submit'), 'attr') . '" data-href="items/bulkEdit" title="' . esc(lang('Items.edit_multiple_items'), 'attr') . '">
+        <span class="glyphicon glyphicon-edit">&nbsp;</span>' . esc(lang('Items.bulk_edit')) . '
+    </button>
+    <button id="generate_barcodes" class="btn btn-default btn-sm print_hide manage-table-action-secondary" data-href="' . esc("$controller_name/generateBarcodes", 'attr') . '" title="' . esc(lang('Items.generate_barcodes'), 'attr') . '">
+        <span class="glyphicon glyphicon-barcode">&nbsp;</span>' . esc(lang('Items.generate_barcodes')) . '
+    </button>';
 
-<div id="toolbar">
-    <div class="pull-left form-inline" role="toolbar">
-        <button id="delete" class="btn btn-default btn-sm print_hide">
-            <span class="glyphicon glyphicon-trash">&nbsp;</span><?= lang('Common.delete') ?>
-        </button>
-        <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg print_hide" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= "items/bulkEdit" ?>" title="<?= lang('Items.edit_multiple_items') ?>">
-            <span class="glyphicon glyphicon-edit">&nbsp;</span><?= lang('Items.bulk_edit') ?>
-        </button>
-        <button id="generate_barcodes" class="btn btn-default btn-sm print_hide" data-href="<?= "$controller_name/generateBarcodes" ?>" title="<?= lang('Items.generate_barcodes') ?>">
-            <span class="glyphicon glyphicon-barcode">&nbsp;</span><?= lang('Items.generate_barcodes') ?>
-        </button>
-        <?= form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']) ?>
-        <?= form_multiselect('filters[]', $filters, $selected_filters ?? [], [
-            'id'                        => 'filters',
-            'class'                     => 'selectpicker show-menu-arrow',
-            'data-none-selected-text'   => lang('Common.none_selected_text'),
-            'data-selected-text-format' => 'count > 1',
-            'data-style'                => 'btn-default btn-sm',
-            'data-width'                => 'fit'
-        ]) ?>
-        <?php
-        if (count($stock_locations) > 1) {
-            echo form_dropdown(
-                'stock_location',
-                $stock_locations,
-                $stock_location,
-                [
-                    'id'         => 'stock_location',
-                    'class'      => 'selectpicker show-menu-arrow',
-                    'data-style' => 'btn-default btn-sm',
-                    'data-width' => 'fit'
-                ]
-            );
-        }
-        ?>
-    </div>
-</div>
+$toolbar_filters = form_input(['name' => 'daterangepicker', 'class' => 'form-control input-sm', 'id' => 'daterangepicker']);
+$toolbar_filters .= form_multiselect('filters[]', $filters, $selected_filters ?? [], [
+    'id'                        => 'filters',
+    'class'                     => 'selectpicker show-menu-arrow',
+    'data-none-selected-text'   => lang('Common.none_selected_text'),
+    'data-selected-text-format' => 'count > 1',
+    'data-style'                => 'btn-default btn-sm',
+    'data-width'                => 'fit'
+]);
 
-<div id="table_holder">
-    <table id="table"></table>
-</div>
+if (count($stock_locations) > 1) {
+    $toolbar_filters .= form_dropdown(
+        'stock_location',
+        $stock_locations,
+        $stock_location,
+        [
+            'id'         => 'stock_location',
+            'class'      => 'selectpicker show-menu-arrow',
+            'data-style' => 'btn-default btn-sm',
+            'data-width' => 'fit'
+        ]
+    );
+}
+?>
+
+<?php // Selector contracts: id="toolbar" and id="table" are rendered by partial/manage_table. ?>
+<?= view('partial/manage_table', [
+    'controller_name'  => $controller_name,
+    'primary_actions'  => $primary_actions,
+    'toolbar_actions'  => $toolbar_actions,
+    'toolbar_filters'  => $toolbar_filters
+]) ?>
 
 <?= view('partial/footer') ?>

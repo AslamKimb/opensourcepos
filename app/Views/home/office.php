@@ -1,7 +1,8 @@
 <?php
-/**
- * @var array $allowed_modules
- */
+ /**
+  * @var array $allowed_modules
+  * @var array $config
+  */
 ?>
 
 <?= view('partial/header') ?>
@@ -10,7 +11,7 @@
     dialog_support.init("a.modal-dlg");
 </script>
 
-<div class="page-kicker text-center"><?= lang('Common.welcome_message') ?></div>
+<div class="page-kicker text-center"><?= lang('Common.welcome_message', [brand_short_name($config)]) ?></div>
 
 <div id="office_module_list" class="module-grid">
     <?php foreach ($allowed_modules as $module) { ?>

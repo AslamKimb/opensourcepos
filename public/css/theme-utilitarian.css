@@ -1,9 +1,9 @@
 :root {
-    --ui-bg: #eef3f8;
-    --ui-bg-subtle: #f6f8fb;
+    --ui-bg: #edf2f7;
+    --ui-bg-subtle: #f7f9fc;
     --ui-surface: #ffffff;
     --ui-surface-muted: #f8fafc;
-    --ui-surface-strong: #e8eef5;
+    --ui-surface-strong: #e7edf4;
     --ui-text: #17212f;
     --ui-text-muted: #5f6f82;
     --ui-text-soft: #8794a5;
@@ -15,22 +15,36 @@
     --ui-danger: #b42318;
     --ui-warning: #b7791f;
     --ui-success: #137333;
+    --ui-info: #2563eb;
 
     --ui-space-0: 0;
-    --ui-space-1: 0.25rem;
-    --ui-space-2: 0.5rem;
-    --ui-space-3: 0.75rem;
-    --ui-space-4: 1rem;
-    --ui-space-5: 1.5rem;
-    --ui-space-6: 2rem;
+    --ui-space-1: 4px;
+    --ui-space-2: 8px;
+    --ui-space-3: 12px;
+    --ui-space-4: 16px;
+    --ui-space-5: 24px;
+    --ui-space-6: 32px;
 
-    --ui-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --ui-font-size-xs: 0.75rem;
-    --ui-font-size-sm: 0.8125rem;
-    --ui-font-size-md: 0.875rem;
-    --ui-font-size-lg: 1rem;
-    --ui-font-size-xl: 1.25rem;
-    --ui-font-size-2xl: 1.5rem;
+    --ui-font-family-base: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --ui-font-family: var(--ui-font-family-base);
+    --ui-font-size-xs: 12px;
+    --ui-font-size-sm: 13px;
+    --ui-font-size-md: 14px;
+    --ui-font-size-lg: 16px;
+    --ui-font-size-xl: 20px;
+    --ui-font-size-2xl: 24px;
+    --ui-line-height-base: 1.5;
+    --ui-line-height-compact: 1.35;
+    --ui-line-height-heading: 1.18;
+    --ui-heading-color: var(--ui-text);
+
+    --ui-control-height: 38px;
+    --ui-control-padding-y: 8px;
+    --ui-control-padding-x: 12px;
+    --ui-table-cell-padding-y: 10px;
+    --ui-table-cell-padding-x: 12px;
+    --ui-card-padding: var(--ui-space-4);
+    --ui-section-gap: var(--ui-space-4);
 
     --ui-radius-xs: 2px;
     --ui-radius-sm: 4px;
@@ -64,7 +78,61 @@ body {
     color: var(--ui-text);
     font-family: var(--ui-font-family);
     font-size: var(--ui-font-size-md);
-    line-height: 1.45;
+    line-height: var(--ui-line-height-base);
+    text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    color: var(--ui-heading-color);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: var(--ui-line-height-heading);
+    margin-bottom: var(--ui-space-3);
+    margin-top: 0;
+}
+
+h1,
+.h1 {
+    font-size: var(--ui-font-size-2xl);
+}
+
+h2,
+.h2 {
+    font-size: var(--ui-font-size-xl);
+}
+
+h3,
+.h3 {
+    font-size: var(--ui-font-size-lg);
+}
+
+h4,
+h5,
+h6,
+.h4,
+.h5,
+.h6 {
+    font-size: var(--ui-font-size-md);
+}
+
+p {
+    margin: 0 0 var(--ui-space-3);
+}
+
+small,
+.small {
+    line-height: var(--ui-line-height-compact);
 }
 
 a {
@@ -94,8 +162,8 @@ a:focus {
 .table > thead > tr > td,
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
-    padding: var(--ui-space-2) var(--ui-space-3);
-    line-height: 1.35;
+    padding: var(--ui-table-cell-padding-y) var(--ui-table-cell-padding-x);
+    line-height: var(--ui-line-height-compact);
     vertical-align: middle;
 }
 
@@ -123,7 +191,7 @@ a:focus {
 .table-condensed > thead > tr > td,
 .table-condensed > tbody > tr > td,
 .table-condensed > tfoot > tr > td {
-    padding: var(--ui-space-1) var(--ui-space-2);
+    padding: calc(var(--ui-table-cell-padding-y) / 2) var(--ui-space-2);
 }
 
 .form-control,
@@ -135,8 +203,10 @@ select.form-control {
     border-radius: var(--ui-radius-sm);
     box-shadow: var(--ui-elevation-0);
     color: var(--ui-text);
-    min-height: 2.125rem;
     font-size: var(--ui-font-size-md);
+    line-height: var(--ui-line-height-compact);
+    min-height: var(--ui-control-height);
+    padding: var(--ui-control-padding-y) var(--ui-control-padding-x);
 }
 
 .form-control:focus,
@@ -156,23 +226,27 @@ select.form-control {
 }
 
 .control-label {
-    color: var(--ui-text-muted);
+    color: var(--ui-text);
     font-size: var(--ui-font-size-sm);
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: var(--ui-line-height-compact);
 }
 
 .btn {
     border-radius: var(--ui-radius-sm);
     box-shadow: var(--ui-elevation-0);
-    padding: var(--ui-space-2) var(--ui-space-4);
     font-size: var(--ui-font-size-md);
     font-weight: 700;
-    line-height: 1.2;
+    line-height: var(--ui-line-height-compact);
+    min-height: var(--ui-control-height);
+    padding: var(--ui-control-padding-y) var(--ui-control-padding-x);
     transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
 }
 
 .btn-sm,
 .btn-group-sm > .btn {
+    min-height: 2rem;
     padding: var(--ui-space-1) var(--ui-space-3);
     font-size: var(--ui-font-size-sm);
 }
@@ -252,8 +326,8 @@ select.form-control {
 }
 
 .panel-primary > .panel-heading {
-    background: #14324a;
-    border-color: #14324a;
+    background: var(--ui-accent);
+    border-color: var(--ui-accent);
     color: #fff;
 }
 
@@ -266,7 +340,7 @@ select.form-control {
 .card-body,
 .modal-body,
 .well {
-    padding: var(--ui-space-4);
+    padding: var(--ui-card-padding);
 }
 
 .panel-footer,
@@ -392,7 +466,7 @@ select.form-control {
 .bootstrap-dialog.type-success .modal-header,
 .bootstrap-dialog.type-warning .modal-header,
 .bootstrap-dialog.type-danger .modal-header {
-    background: #14324a;
+    background: var(--ui-accent);
 }
 
 .fixed-table-toolbar {

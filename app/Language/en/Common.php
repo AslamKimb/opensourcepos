@@ -82,7 +82,7 @@ return [
     "view_recent_sales"              => "View Recent Sales",
     "website"                        => "opensourcepos.org",
     "welcome"                        => "Welcome",
-    "welcome_message"                => "Welcome to OSPOS, click a module below to get started.",
+    "welcome_message"                => "Welcome to {0}, click a module below to get started.",
     "yes"                            => "Yes",
     "you_are_using_ospos"            => "",
     "zip"                            => "Postal Code",

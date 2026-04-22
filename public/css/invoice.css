@@ -35,7 +35,7 @@
 }
 
 #header {
-    background: #14324a;
+    background: var(--ui-accent);
     border-radius: var(--ui-radius-md);
     color: #fff;
     font-size: var(--ui-font-size-2xl);

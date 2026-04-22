@@ -20,22 +20,23 @@
     });
 </script>
 
-<div id="title_bar" class="btn-toolbar">
-    <button class="btn btn-info btn-sm pull-right modal-dlg" data-btn-submit="<?= lang('Common.submit') ?>" data-href="<?= esc("$controller_name/view") ?>" title="<?= lang(ucfirst($controller_name) . '.new') ?>">
-        <span class="glyphicon glyphicon-heart">&nbsp;</span><?= lang(ucfirst($controller_name) . '.new') ?>
-    </button>
-</div>
+<?php
+$primary_actions = '
+    <button class="btn btn-info btn-sm pull-right modal-dlg manage-table-action-primary" data-btn-submit="' . esc(lang('Common.submit'), 'attr') . '" data-href="' . esc("$controller_name/view", 'attr') . '" title="' . esc(lang(ucfirst($controller_name) . '.new'), 'attr') . '">
+        <span class="glyphicon glyphicon-heart">&nbsp;</span>' . esc(lang(ucfirst($controller_name) . '.new')) . '
+    </button>';
 
-<div id="toolbar">
-    <div class="pull-left btn-toolbar">
-        <button id="delete" class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-trash">&nbsp;</span><?= lang('Common.delete') ?>
-        </button>
-    </div>
-</div>
+$toolbar_actions = '
+    <button id="delete" class="btn btn-default btn-sm manage-table-action-danger">
+        <span class="glyphicon glyphicon-trash">&nbsp;</span>' . esc(lang('Common.delete')) . '
+    </button>';
+?>
 
-<div id="table_holder">
-    <table id="table"></table>
-</div>
+<?php // Selector contracts: id="toolbar" and id="table" are rendered by partial/manage_table. ?>
+<?= view('partial/manage_table', [
+    'controller_name' => $controller_name,
+    'primary_actions' => $primary_actions,
+    'toolbar_actions' => $toolbar_actions
+]) ?>
 
 <?= view('partial/footer') ?>

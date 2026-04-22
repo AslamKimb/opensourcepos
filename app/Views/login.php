@@ -7,6 +7,9 @@
  * @var array $config
  * @var $validation
  */
+
+$brand_name = brand_display_name($config);
+$brand_short_name = brand_short_name($config);
 ?>
 
 <!doctype html>
@@ -15,10 +18,10 @@
 <head>
     <meta charset="utf-8">
     <base href="<?= base_url() ?>">
-    <title><?= esc($config['company']) . '&nbsp;|&nbsp;' . esc(lang('Common.software_short')) . '&nbsp;|&nbsp;' . esc(lang('Login.login')) ?></title>
+    <title><?= esc($brand_name) . '&nbsp;|&nbsp;' . esc($brand_short_name) . '&nbsp;|&nbsp;' . esc(lang('Login.login')) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="<?= esc(brand_favicon_href($config), 'attr') ?>">
     <?php
     $theme = (empty($config['theme'])
         || 'paper' == $config['theme']
@@ -28,8 +31,9 @@
     ?>
     <link rel="stylesheet" href="resources/bootswatch5/<?= "$theme" ?>/bootstrap.min.css">
     <link rel="stylesheet" href="css/theme-utilitarian.css">
+    <?= view('partial/brand_css', ['config' => $config]) ?>
     <link rel="stylesheet" href="css/login.css">
-    <meta name="theme-color" content="#2c3e50">
+    <meta name="theme-color" content="<?= esc(brand_theme_color($config), 'attr') ?>">
 </head>
 
 <body class="bg-secondary-subtle d-flex flex-column">
@@ -39,11 +43,9 @@
                 <?php if (isset($config['company_logo']) && !empty($config['company_logo'])): ?>
                     <img class="logo w-100" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
                 <?php else: ?>
-                    <svg class="logo text-primary" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
-                        <title><?= lang('Common.software_title') . '&nbsp;' . lang('Common.logo') ?></title>
-                        <circle cx="154.28999" cy="154.28999" r="154.28999" fill="currentColor" />
-                        <path fill="#fff" d="M154.88998 145.66999c-.03-1.26-.03-3.29.19-4.29 4.6-11.1 15.57-18.82 28.3-18.82h.41v58.3c0 .12-.03.78-.04.9-.54 16.46-14.01 29.7-30.59 29.7v27.08c21 0 39.17-11.27 49.29-28.07l.07-.11c2.9.45 5.86.75 8.9.75 31.95 0 57.81-26 57.81-57.81 0-30.87-24.37-56.46-55.1-57.81h-30.74c-17.18 0-32.61 7.64-43.22 19.63-10.59-11.92-25.86-19.59-43.02-19.59-31.86 0-57.77 25.91-57.77 57.77 0 31.86 25.91 57.77 57.77 57.77 31.86 0 57.77-25.91 57.77-57.77v-3.68c-.01.01-.02-3.31-.03-3.95zm-57.75 38.33c-16.92 0-30.69-13.77-30.69-30.69s13.77-30.69 30.69-30.69 30.69 13.77 30.69 30.69-13.77 30.69-30.69 30.69zm142.96-19.87c-4.33 11.64-15.57 19.9-28.7 19.9h-.54v-61.47h.54c13.13 0 24.37 8.26 28.7 19.9 1.35 3.25 2.03 6.91 2.03 10.83s-.67 7.59-2.03 10.84z" />
-                    </svg>
+                    <div class="logo brand-fallback-logo" role="img" aria-label="<?= esc($brand_short_name . '&nbsp;' . lang('Common.logo'), 'attr') ?>">
+                        <?= esc(brand_initial($config)) ?>
+                    </div>
                 <?php endif; ?>
             </div>
             <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
@@ -54,7 +56,7 @@
                         <strong><?= lang('Login.migration_auth_message', [$latest_version]) ?></strong>
                     </div>
                 <?php else: ?>
-                    <h3 class="text-center m-0"><?= lang('Login.welcome', [lang('Common.software_short')]) ?></h3>
+                    <h3 class="text-center m-0"><?= lang('Login.welcome', [$brand_short_name]) ?></h3>
                 <?php endif; ?>
                 <?php if ($has_errors): ?>
                     <?php foreach ($validation->getErrors() as $error): ?>
@@ -110,14 +112,8 @@
 
     <footer class="d-flex justify-content-center flex-shrink-0 text-center">
         <div class="footer container-fluid bg-body rounded shadow p-3 mb-md-4 mx-md-3">
-            <span class="text-primary">
-                <svg height="1.25em" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">
-                    <title><?= lang('Common.software_title') . '&nbsp;' . lang('Common.logo') ?></title>
-                    <circle cx="154.28999" cy="154.28999" r="154.28999" fill="currentColor" />
-                    <path fill="#fff" d="M154.88998 145.66999c-.03-1.26-.03-3.29.19-4.29 4.6-11.1 15.57-18.82 28.3-18.82h.41v58.3c0 .12-.03.78-.04.9-.54 16.46-14.01 29.7-30.59 29.7v27.08c21 0 39.17-11.27 49.29-28.07l.07-.11c2.9.45 5.86.75 8.9.75 31.95 0 57.81-26 57.81-57.81 0-30.87-24.37-56.46-55.1-57.81h-30.74c-17.18 0-32.61 7.64-43.22 19.63-10.59-11.92-25.86-19.59-43.02-19.59-31.86 0-57.77 25.91-57.77 57.77 0 31.86 25.91 57.77 57.77 57.77 31.86 0 57.77-25.91 57.77-57.77v-3.68c-.01.01-.02-3.31-.03-3.95zm-57.75 38.33c-16.92 0-30.69-13.77-30.69-30.69s13.77-30.69 30.69-30.69 30.69 13.77 30.69 30.69-13.77 30.69-30.69 30.69zm142.96-19.87c-4.33 11.64-15.57 19.9-28.7 19.9h-.54v-61.47h.54c13.13 0 24.37 8.26 28.7 19.9 1.35 3.25 2.03 6.91 2.03 10.83s-.67 7.59-2.03 10.84z" />
-                </svg>
-            </span>
-            <span><?= lang('Common.software_title') ?></span>
+            <span class="brand-footer-mark"><?= esc(brand_initial($config)) ?></span>
+            <span><?= esc($brand_name) ?></span>
         </div>
     </footer>
 </body>

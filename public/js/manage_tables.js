@@ -185,6 +185,7 @@
 
     var load_success = function(callback) {
         return function(response) {
+            hide_load_error();
             typeof options.load_callback == 'function' && options.load_callback();
             options.load_callback = undefined;
             dialog_support.init("a.modal-dlg");
@@ -193,6 +194,25 @@
     };
 
     var options;
+
+    var hide_load_error = function() {
+        $('.manage-table-load-error').addClass('hidden').removeAttr('data-status');
+    };
+
+    var show_load_error = function(status) {
+        $('.manage-table-load-error')
+            .removeClass('hidden')
+            .attr('data-status', status || 'error');
+    };
+
+    var init_retry = function() {
+        $(document)
+            .off('click.manage-table-retry', '[data-table-retry]')
+            .on('click.manage-table-retry', '[data-table-retry]', function() {
+                hide_load_error();
+                refresh();
+            });
+    };
 
     var toggle_column_visibility = function() {
         if (localStorage[options.employee_id]) {
@@ -205,12 +225,15 @@
 
     var init = function (_options) {
         options = _options;
+        var on_load_error = options.onLoadError;
         enable_actions = enable_actions(options.enableActions);
         load_success = load_success(options.onLoadSuccess);
         const export_suffix = new Date().toISOString().slice(0, 16).replace(/(-|\s*|T|:)*/g,"");
         $('#table')
             .addClass("table-striped")
             .addClass("table-bordered")
+            .addClass("table-hover")
+            .addClass("manage-table-grid")
             .bootstrapTable($.extend(options, {
             columns: options.headers,
             stickyHeader: true,
@@ -228,6 +251,17 @@
             exportOptions: {
                 fileName: options.resource.replace(/.*\/(.*?)$/g, '$1') + "_" + export_suffix
             },
+            mobileResponsive: true,
+            minWidth: 768,
+            showButtonText: false,
+            loadingTemplate: function(loadingMessage) {
+                return [
+                    '<div class="manage-table-loading" role="status">',
+                    '<span class="manage-table-loading-mark"></span>',
+                    '<span class="manage-table-loading-text">' + loadingMessage + '</span>',
+                    '</div>'
+                ].join('');
+            },
             onPageChange: function(response) {
                 load_success(response);
                 enable_actions();
@@ -242,6 +276,10 @@
             onLoadSuccess: function(response) {
                 load_success(response);
                 enable_actions();
+            },
+            onLoadError: function(status) {
+                show_load_error(status);
+                typeof on_load_error == 'function' && on_load_error.call(this, status);
             },
             onColumnSwitch : function(field, checked) {
                 var user_settings = localStorage[options.employee_id];
@@ -258,6 +296,7 @@
             escape: true
         }));
         enable_actions();
+        init_retry();
         init_delete();
         init_restore();
         toggle_column_visibility();

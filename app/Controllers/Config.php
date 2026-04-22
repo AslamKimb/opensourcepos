@@ -228,6 +228,9 @@ class Config extends Secure_Controller
         $data['barcode_fonts'] = $this->barcode_lib->listfonts('fonts');
         $data['logo_exists'] = $this->config['company_logo'] != '';
         $data['logo_src'] = !empty($this->config['company_logo']) ? base_url('uploads/' . $this->config['company_logo']) : '';
+        $data['brand_favicon_exists'] = !empty($this->config['brand_favicon']);
+        $data['brand_favicon_src'] = brand_favicon_href($this->config);
+        $data['brand_color_settings'] = brand_color_settings();
         $data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
         $data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
         $data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
@@ -277,6 +280,17 @@ class Config extends Secure_Controller
         $data['mailchimp']['lists'] = $this->_mailchimp();
 
         return view('configs/manage', $data);
+    }
+
+    public function postSave($data_item_id = NEW_ENTRY, string $action = '')
+    {
+        if ($data_item_id === 'branding') {
+            return $action === 'remove_favicon'
+                ? $this->postRemoveBrandFavicon()
+                : $this->postSaveBranding();
+        }
+
+        return false;
     }
 
     /**
@@ -356,6 +370,105 @@ class Config extends Secure_Controller
         $file->move(FCPATH . 'uploads/', $file_info['raw_name'] . '.' . $file_info['file_ext'], true);
 
         return ($file_info);
+    }
+
+    /**
+     * Saves runtime branding. Used in app/Views/configs/branding_config.php.
+     *
+     * @throws ReflectionException
+     * @return ResponseInterface
+     * @noinspection PhpUnused
+     */
+    public function postSaveBranding(): ResponseInterface
+    {
+        $batch_save_data = [
+            'brand_short_name'      => trim(strip_tags((string)$this->request->getPost('brand_short_name'))),
+            'brand_show_powered_by' => $this->request->getPost('brand_show_powered_by') != null ? '1' : '0',
+        ];
+
+        foreach (brand_color_settings() as $key => $setting) {
+            $raw_color = trim((string)$this->request->getPost($key));
+            $color = brand_normalize_hex_color($raw_color);
+            if ($raw_color !== '' && $color === null) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => lang('Config.brand_color_invalid', [$setting['label']])
+                ]);
+            }
+
+            $batch_save_data[$key] = $color ?? '';
+        }
+
+        $upload_data = $this->uploadBrandFavicon();
+        $upload_success = empty($upload_data['error']);
+
+        if (!$upload_success) {
+            return $this->response->setJSON(['success' => false, 'message' => strip_tags($upload_data['error'])]);
+        }
+
+        if (!empty($upload_data['file_name'])) {
+            $batch_save_data['brand_favicon'] = $upload_data['file_name'];
+        }
+
+        $success = $this->appconfig->batch_save($batch_save_data);
+        if (!$success && !empty($upload_data['file_name'])) {
+            $new_path = FCPATH . 'uploads/branding/' . $upload_data['file_name'];
+            if (is_file($new_path)) {
+                unlink($new_path);
+            }
+        }
+        if ($success && !empty($upload_data['file_name'])) {
+            $previous_favicon = basename((string)($this->config['brand_favicon'] ?? ''));
+            if ($previous_favicon !== '' && $previous_favicon !== $upload_data['file_name']) {
+                $previous_path = FCPATH . 'uploads/branding/' . $previous_favicon;
+                if (is_file($previous_path)) {
+                    unlink($previous_path);
+                }
+            }
+        }
+
+        return $this->response->setJSON(['success' => $success, 'message' => lang('Config.saved_' . ($success ? '' : 'un') . 'successfully')]);
+    }
+
+    private function uploadBrandFavicon(): array
+    {
+        $file = $this->request->getFile('brand_favicon');
+        if (!$file || $file->getError() === UPLOAD_ERR_NO_FILE) {
+            return [];
+        }
+
+        helper(['form']);
+        $validation_rule = [
+            'brand_favicon' => [
+                'label' => 'Brand favicon',
+                'rules' => [
+                    'uploaded[brand_favicon]',
+                    'max_size[brand_favicon,1024]',
+                    'mime_in[brand_favicon,image/png,image/jpg,image/jpeg,image/x-icon,image/vnd.microsoft.icon]',
+                    'ext_in[brand_favicon,png,jpg,jpeg,ico]',
+                ]
+            ]
+        ];
+
+        if (!$this->validate($validation_rule)) {
+            return ['error' => $this->validator->getError('brand_favicon')];
+        }
+
+        $extension = strtolower($file->getClientExtension());
+        $file_name = bin2hex(random_bytes(16)) . '.' . $extension;
+        $upload_path = FCPATH . 'uploads/branding/';
+
+        if (!is_dir($upload_path)) {
+            mkdir($upload_path, 0750, true);
+        }
+
+        try {
+            $file->move($upload_path, $file_name, true);
+        } catch (\Throwable $e) {
+            return ['error' => $e->getMessage()];
+        }
+
+        return ['file_name' => $file_name];
     }
 
     /**
@@ -989,6 +1102,28 @@ class Config extends Secure_Controller
     public function postRemoveLogo(): ResponseInterface
     {
         $success = $this->appconfig->save(['company_logo' => '']);
+
+        return $this->response->setJSON(['success' => $success]);
+    }
+
+    /**
+     * Removes the runtime brand favicon from the database and upload folder.
+     *
+     * @return ResponseInterface
+     * @throws ReflectionException
+     * @noinspection PhpUnused
+     */
+    public function postRemoveBrandFavicon(): ResponseInterface
+    {
+        $favicon = basename((string)($this->config['brand_favicon'] ?? ''));
+        if ($favicon !== '') {
+            $path = FCPATH . 'uploads/branding/' . $favicon;
+            if (is_file($path)) {
+                unlink($path);
+            }
+        }
+
+        $success = $this->appconfig->save(['brand_favicon' => '']);
 
         return $this->response->setJSON(['success' => $success]);
     }

@@ -12,7 +12,7 @@
 }
 
 .report-card .panel-heading {
-    background: #14324a;
+    background: var(--ui-accent);
     color: #fff;
 }
 
