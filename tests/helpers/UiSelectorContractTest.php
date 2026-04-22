@@ -2,7 +2,10 @@
 
 use PHPUnit\Framework\TestCase;
 
-class UiSelectorContractTest extends TestCase
+/**
+ * @internal
+ */
+final class UiSelectorContractTest extends TestCase
 {
     public function testManageTablesScriptKeepsCoreSelectors(): void
     {
@@ -15,7 +18,7 @@ class UiSelectorContractTest extends TestCase
         $this->assertStringContainsString('button.modal-dlg', $source);
         $this->assertStringContainsString('#delete', $source);
         $this->assertStringContainsString('#restore', $source);
-        $this->assertStringContainsString("#error_message_box", $source);
+        $this->assertStringContainsString('#error_message_box', $source);
         $this->assertStringContainsString("'.form-group'", $source);
     }
 
@@ -57,7 +60,7 @@ class UiSelectorContractTest extends TestCase
     public function testRepresentativeViewsExposeModalAndAutocompleteContracts(): void
     {
         $salesRegister = file_get_contents(__DIR__ . '/../../app/Views/sales/register.php');
-        $peopleForm = file_get_contents(__DIR__ . '/../../app/Views/people/form_basic_info.php');
+        $peopleForm    = file_get_contents(__DIR__ . '/../../app/Views/people/form_basic_info.php');
 
         $this->assertNotFalse($salesRegister);
         $this->assertNotFalse($peopleForm);
@@ -78,7 +81,7 @@ class UiSelectorContractTest extends TestCase
     public function testSalesRegisterTouchOptimizedLayoutContractsExist(): void
     {
         $salesRegister = file_get_contents(__DIR__ . '/../../app/Views/sales/register.php');
-        $registerCss = file_get_contents(__DIR__ . '/../../public/css/register.css');
+        $registerCss   = file_get_contents(__DIR__ . '/../../public/css/register.css');
 
         $this->assertNotFalse($salesRegister);
         $this->assertNotFalse($registerCss);
@@ -142,15 +145,15 @@ class UiSelectorContractTest extends TestCase
 
     public function testModernUiRefreshKeepsSharedPageFamilyHooks(): void
     {
-        $header = file_get_contents(__DIR__ . '/../../app/Views/partial/header.php');
-        $home = file_get_contents(__DIR__ . '/../../app/Views/home/home.php');
-        $office = file_get_contents(__DIR__ . '/../../app/Views/home/office.php');
-        $themeCss = file_get_contents(__DIR__ . '/../../public/css/theme-utilitarian.css');
-        $appCss = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+        $header      = file_get_contents(__DIR__ . '/../../app/Views/partial/header.php');
+        $home        = file_get_contents(__DIR__ . '/../../app/Views/home/home.php');
+        $office      = file_get_contents(__DIR__ . '/../../app/Views/home/office.php');
+        $themeCss    = file_get_contents(__DIR__ . '/../../public/css/theme-utilitarian.css');
+        $appCss      = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
         $registerCss = file_get_contents(__DIR__ . '/../../public/css/register.css');
-        $reportsCss = file_get_contents(__DIR__ . '/../../public/css/reports.css');
-        $invoiceCss = file_get_contents(__DIR__ . '/../../public/css/invoice.css');
-        $receiptCss = file_get_contents(__DIR__ . '/../../public/css/receipt.css');
+        $reportsCss  = file_get_contents(__DIR__ . '/../../public/css/reports.css');
+        $invoiceCss  = file_get_contents(__DIR__ . '/../../public/css/invoice.css');
+        $receiptCss  = file_get_contents(__DIR__ . '/../../public/css/receipt.css');
 
         $this->assertNotFalse($header);
         $this->assertNotFalse($home);
@@ -203,15 +206,15 @@ class UiSelectorContractTest extends TestCase
 
     public function testRuntimeBrandingViewsDoNotHardCodeProductBrand(): void
     {
-        $header = file_get_contents(__DIR__ . '/../../app/Views/partial/header.php');
-        $login = file_get_contents(__DIR__ . '/../../app/Views/login.php');
-        $footer = file_get_contents(__DIR__ . '/../../app/Views/partial/footer.php');
-        $home = file_get_contents(__DIR__ . '/../../app/Views/home/home.php');
-        $office = file_get_contents(__DIR__ . '/../../app/Views/home/office.php');
-        $invoiceEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/invoice_email.php');
-        $quoteEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/quote_email.php');
-        $workOrderEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/work_order_email.php');
-        $invoiceCss = file_get_contents(__DIR__ . '/../../public/css/invoice.css');
+        $header          = file_get_contents(__DIR__ . '/../../app/Views/partial/header.php');
+        $login           = file_get_contents(__DIR__ . '/../../app/Views/login.php');
+        $footer          = file_get_contents(__DIR__ . '/../../app/Views/partial/footer.php');
+        $home            = file_get_contents(__DIR__ . '/../../app/Views/home/home.php');
+        $office          = file_get_contents(__DIR__ . '/../../app/Views/home/office.php');
+        $invoiceEmail    = file_get_contents(__DIR__ . '/../../app/Views/sales/invoice_email.php');
+        $quoteEmail      = file_get_contents(__DIR__ . '/../../app/Views/sales/quote_email.php');
+        $workOrderEmail  = file_get_contents(__DIR__ . '/../../app/Views/sales/work_order_email.php');
+        $invoiceCss      = file_get_contents(__DIR__ . '/../../public/css/invoice.css');
         $invoiceEmailCss = file_get_contents(__DIR__ . '/../../public/css/invoice_email.css');
 
         $this->assertNotFalse($header);
@@ -249,9 +252,9 @@ class UiSelectorContractTest extends TestCase
 
     public function testBrandingConfigSurfaceAndControllerContractsExist(): void
     {
-        $manage = file_get_contents(__DIR__ . '/../../app/Views/configs/manage.php');
+        $manage         = file_get_contents(__DIR__ . '/../../app/Views/configs/manage.php');
         $brandingConfig = file_get_contents(__DIR__ . '/../../app/Views/configs/branding_config.php');
-        $controller = file_get_contents(__DIR__ . '/../../app/Controllers/Config.php');
+        $controller     = file_get_contents(__DIR__ . '/../../app/Controllers/Config.php');
 
         $this->assertNotFalse($manage);
         $this->assertNotFalse($brandingConfig);
@@ -275,10 +278,10 @@ class UiSelectorContractTest extends TestCase
 
     public function testConfigUiModernizationContractsExist(): void
     {
-        $manage = file_get_contents(__DIR__ . '/../../app/Views/configs/manage.php');
-        $infoConfig = file_get_contents(__DIR__ . '/../../app/Views/configs/info_config.php');
+        $manage         = file_get_contents(__DIR__ . '/../../app/Views/configs/manage.php');
+        $infoConfig     = file_get_contents(__DIR__ . '/../../app/Views/configs/info_config.php');
         $brandingConfig = file_get_contents(__DIR__ . '/../../app/Views/configs/branding_config.php');
-        $appCss = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+        $appCss         = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
 
         $this->assertNotFalse($manage);
         $this->assertNotFalse($infoConfig);
@@ -308,9 +311,9 @@ class UiSelectorContractTest extends TestCase
 
     public function testManageTableUiModernizationContractsExist(): void
     {
-        $partial = file_get_contents(__DIR__ . '/../../app/Views/partial/manage_table.php');
-        $manageScript = file_get_contents(__DIR__ . '/../../public/js/manage_tables.js');
-        $appCss = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+        $partial         = file_get_contents(__DIR__ . '/../../app/Views/partial/manage_table.php');
+        $manageScript    = file_get_contents(__DIR__ . '/../../public/js/manage_tables.js');
+        $appCss          = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
         $bootstrapLocale = file_get_contents(__DIR__ . '/../../app/Views/partial/bootstrap_tables_locale.php');
 
         $this->assertNotFalse($partial);
@@ -367,7 +370,7 @@ class UiSelectorContractTest extends TestCase
     public function testGlobalTypographyAndSpacingContractsExist(): void
     {
         $themeCss = file_get_contents(__DIR__ . '/../../public/css/theme-utilitarian.css');
-        $appCss = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+        $appCss   = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
 
         $this->assertNotFalse($themeCss);
         $this->assertNotFalse($appCss);
@@ -415,5 +418,130 @@ class UiSelectorContractTest extends TestCase
         }
 
         $this->assertStringNotContainsString('letter-spacing: -', $themeCss . $appCss);
+    }
+
+    public function testLegacyVisualPatternsRenderAsModernComponents(): void
+    {
+        $themeCss = file_get_contents(__DIR__ . '/../../public/css/theme-utilitarian.css');
+        $appCss   = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+
+        $this->assertNotFalse($themeCss);
+        $this->assertNotFalse($appCss);
+
+        foreach ([
+            '--ui-legacy-icon-size:',
+            '--ui-legacy-icon-bg:',
+            '--ui-table-row-border:',
+            '--ui-modal-backdrop:',
+        ] as $tokenContract) {
+            $this->assertStringContainsString($tokenContract, $themeCss);
+        }
+
+        foreach ([
+            '.panel,',
+            '.well {',
+            'border: 1px solid var(--ui-border-color);',
+            '.well {',
+            'box-shadow: var(--ui-elevation-0);',
+            '.form-group-sm .form-control,',
+            '.form-group-sm .input-group-addon,',
+            '.input-sm {',
+            'min-height: var(--ui-control-height);',
+            '.btn-xs,',
+            '.btn-sm,',
+            '.btn .glyphicon {',
+            'height: var(--ui-legacy-icon-size);',
+            'width: var(--ui-legacy-icon-size);',
+            '.input-group-addon .glyphicon {',
+            '.table-bordered > thead > tr > th,',
+            'border-left-width: 0;',
+            'border-right-width: 0;',
+            '.modal-backdrop.in {',
+            'background: var(--ui-modal-backdrop);',
+            '.modal-content {',
+            '.modal-header .close {',
+        ] as $themeRuleContract) {
+            $this->assertStringContainsString($themeRuleContract, $themeCss);
+        }
+
+        foreach ([
+            '#filters.btn-group .btn',
+            '.manage-table-primary-actions .btn .glyphicon',
+            '.register-payment-panel .btn .glyphicon',
+        ] as $appRuleContract) {
+            $this->assertStringContainsString($appRuleContract, $appCss);
+        }
+    }
+
+    public function testHomeDashboardModernizationContractsExist(): void
+    {
+        $controller = file_get_contents(__DIR__ . '/../../app/Controllers/Home.php');
+        $home       = file_get_contents(__DIR__ . '/../../app/Views/home/home.php');
+        $appCss     = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+        $commonLang = file_get_contents(__DIR__ . '/../../app/Language/en/Common.php');
+
+        $this->assertNotFalse($controller);
+        $this->assertNotFalse($home);
+        $this->assertNotFalse($appCss);
+        $this->assertNotFalse($commonLang);
+
+        foreach ([
+            'buildDashboardData',
+            'getAllowedModuleIds',
+            'getTodaySalesSummary',
+            'getCashupSummary',
+            'getLowStockSummary',
+            'getReceivingSummary',
+        ] as $controllerContract) {
+            $this->assertStringContainsString($controllerContract, $controller);
+        }
+
+        foreach ([
+            'home-dashboard',
+            'home-dashboard-hero',
+            'home-quick-actions',
+            'home-metric-grid',
+            'home-metric-card',
+            'home-dashboard-layout',
+            'home-alert-panel',
+            'home-module-section',
+            'home-role-shortcuts',
+            'home-recent-modules',
+            'id="home_module_list"',
+            'module-grid',
+            'data-module-id',
+        ] as $viewContract) {
+            $this->assertStringContainsString($viewContract, $home);
+        }
+
+        foreach ([
+            '.home-dashboard',
+            '.home-dashboard-hero',
+            '.home-quick-actions',
+            '.home-action',
+            '.home-metric-grid',
+            '.home-metric-card',
+            '.home-dashboard-layout',
+            '.home-alert-panel',
+            '.home-module-section',
+            '.home-role-shortcuts',
+            '.home-recent-modules',
+            '@media (max-width: 767px)',
+        ] as $cssContract) {
+            $this->assertStringContainsString($cssContract, $appCss);
+        }
+
+        foreach ([
+            '"dashboard_quick_actions"',
+            '"dashboard_today_sales"',
+            '"dashboard_cashup_status"',
+            '"dashboard_low_stock"',
+            '"dashboard_receivings"',
+            '"dashboard_recent_modules"',
+            '"dashboard_role_shortcuts"',
+            '"dashboard_all_modules"',
+        ] as $languageContract) {
+            $this->assertStringContainsString($languageContract, $commonLang);
+        }
     }
 }

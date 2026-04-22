@@ -412,7 +412,7 @@ a.none {
     display: flex;
     flex-wrap: wrap;
     gap: var(--ui-space-2);
-    min-height: 3rem;
+    min-height: 48px;
     position: relative;
     width: 100%;
 }
@@ -499,7 +499,7 @@ a.none {
     font-weight: 800;
     gap: var(--ui-space-1);
     justify-content: center;
-    min-height: 2.45rem;
+    min-height: 40px;
 }
 
 .manage-table-action-primary {
@@ -666,8 +666,8 @@ a.none {
     align-items: center;
     display: inline-flex;
     justify-content: center;
-    min-height: 2.25rem;
-    min-width: 2.25rem;
+    min-height: 36px;
+    min-width: 36px;
 }
 
 .manage-table-grid td.bs-checkbox,
@@ -692,8 +692,8 @@ a.none {
     background: var(--ui-action);
     border-radius: 999px;
     display: inline-block;
-    height: 0.75rem;
-    width: 0.75rem;
+    height: 12px;
+    width: 12px;
 }
 
 @keyframes manage-table-pulse {
@@ -718,9 +718,259 @@ a.none {
     text-align: center;
 }
 
+.home-dashboard {
+    display: grid;
+    gap: var(--ui-section-gap);
+    min-width: 0;
+    padding-bottom: var(--ui-section-gap);
+}
+
+.home-dashboard-hero {
+    align-items: center;
+    background: linear-gradient(135deg, var(--ui-surface) 0%, var(--ui-surface-muted) 100%);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-lg);
+    box-shadow: var(--ui-elevation-1);
+    display: grid;
+    gap: var(--ui-section-gap);
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-width: 0;
+    padding: var(--ui-space-6);
+}
+
+.home-dashboard-intro {
+    min-width: 0;
+}
+
+.home-dashboard-intro h1 {
+    color: var(--ui-heading-color);
+    font-size: var(--ui-font-size-3xl);
+    font-weight: 900;
+    line-height: var(--ui-line-height-heading);
+    margin: var(--ui-space-1) 0 var(--ui-space-2);
+}
+
+.home-dashboard .page-kicker {
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-sm);
+    font-weight: 700;
+    margin: 0;
+    text-align: left;
+}
+
+.home-eyebrow {
+    color: var(--ui-accent);
+    display: inline-flex;
+    font-size: var(--ui-font-size-xs);
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.home-quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ui-space-2);
+    justify-content: flex-end;
+    min-width: min(100%, 24rem);
+}
+
+.home-action {
+    align-items: center;
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-md);
+    color: var(--ui-text);
+    display: inline-flex;
+    font-size: var(--ui-font-size-sm);
+    font-weight: 900;
+    gap: var(--ui-space-2);
+    min-height: 44px;
+    padding: var(--ui-space-2) var(--ui-space-3);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.home-action:hover,
+.home-action:focus {
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+    text-decoration: none;
+}
+
+.home-action-primary {
+    background: var(--ui-action);
+    border-color: var(--ui-action-strong);
+    color: #fff;
+}
+
+.home-action-primary:hover,
+.home-action-primary:focus {
+    background: var(--ui-action-strong);
+    color: #fff;
+}
+
+.home-action .glyphicon {
+    align-items: center;
+    display: inline-flex;
+    font-size: 14px;
+    justify-content: center;
+}
+
+.home-metric-grid {
+    display: grid;
+    gap: var(--ui-space-3);
+    grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
+    min-width: 0;
+}
+
+.home-metric-card {
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border-color);
+    border-left: 4px solid var(--ui-accent);
+    border-radius: var(--ui-radius-lg);
+    box-shadow: var(--ui-elevation-1);
+    color: var(--ui-text);
+    display: grid;
+    gap: var(--ui-space-1);
+    min-height: 130px;
+    min-width: 0;
+    padding: var(--ui-card-padding);
+    position: relative;
+    text-decoration: none;
+}
+
+.home-metric-card:hover,
+.home-metric-card:focus {
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+    text-decoration: none;
+}
+
+.home-metric-card-success {
+    border-left-color: var(--ui-success);
+}
+
+.home-metric-card-warning {
+    border-left-color: var(--ui-warning);
+}
+
+.home-metric-card-danger {
+    border-left-color: var(--ui-danger);
+}
+
+.home-metric-card-muted {
+    border-left-color: var(--ui-border-strong);
+}
+
+.home-metric-icon {
+    color: var(--ui-accent);
+    font-size: 18px;
+    position: absolute;
+    right: var(--ui-space-4);
+    top: var(--ui-space-4);
+}
+
+.home-metric-label,
+.home-metric-meta {
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-xs);
+    font-weight: 900;
+}
+
+.home-metric-card strong {
+    color: var(--ui-heading-color);
+    font-size: var(--ui-font-size-3xl);
+    font-weight: 900;
+    line-height: var(--ui-line-height-heading);
+    margin-top: var(--ui-space-3);
+    overflow-wrap: anywhere;
+}
+
+.home-dashboard-layout {
+    display: grid;
+    gap: var(--ui-section-gap);
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.6fr);
+    min-width: 0;
+}
+
+.home-alert-panel,
+.home-module-section {
+    background: var(--ui-surface);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-lg);
+    box-shadow: var(--ui-elevation-1);
+    min-width: 0;
+    padding: var(--ui-card-padding);
+}
+
+.home-role-shortcuts,
+.home-recent-modules {
+    align-content: start;
+}
+
+.home-panel-heading,
+.home-section-heading {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--ui-space-3);
+}
+
+.home-panel-heading h2,
+.home-section-heading h2 {
+    color: var(--ui-heading-color);
+    font-size: var(--ui-font-size-lg);
+    font-weight: 900;
+    line-height: var(--ui-line-height-heading);
+    margin: 0;
+}
+
+.home-shortcut-list {
+    display: grid;
+    gap: var(--ui-space-2);
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    min-width: 0;
+}
+
+.home-shortcut {
+    align-items: center;
+    background: var(--ui-bg-subtle);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-md);
+    color: var(--ui-text);
+    display: flex;
+    font-size: var(--ui-font-size-sm);
+    font-weight: 900;
+    gap: var(--ui-space-2);
+    min-height: 52px;
+    min-width: 0;
+    padding: var(--ui-space-2) var(--ui-space-3);
+    text-decoration: none;
+}
+
+.home-shortcut:hover,
+.home-shortcut:focus {
+    background: var(--ui-surface);
+    border-color: var(--ui-accent);
+    color: var(--ui-text);
+    text-decoration: none;
+}
+
+.home-shortcut img {
+    height: 28px;
+    width: 28px;
+}
+
+.home-shortcut span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 #home_module_list,
 #office_module_list {
-    padding: 0 0 var(--ui-space-6);
+    padding: 0;
     position: relative;
 }
 
@@ -1164,10 +1414,22 @@ a.rollover img {
     vertical-align: middle;
 }
 
+#filters.btn-group .btn {
+    min-height: var(--ui-control-height);
+}
+
 button.btn.dropdown-toggle.btn-sm {
     background-color: #fff;
     border: 1px solid var(--ui-border-color);
     color: var(--ui-text);
+}
+
+.manage-table-primary-actions .btn .glyphicon,
+.manage-table-bulk-actions .btn .glyphicon,
+.register-payment-panel .btn .glyphicon,
+.register-control-strip .btn .glyphicon,
+.register-scan-bar .btn .glyphicon {
+    flex: 0 0 var(--ui-legacy-icon-size);
 }
 
 .utility-message {
@@ -1308,6 +1570,16 @@ button.btn.dropdown-toggle.btn-sm {
 
     .app-content {
         padding-top: var(--ui-space-3);
+    }
+
+    .home-dashboard-hero,
+    .home-dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .home-quick-actions {
+        justify-content: flex-start;
+        min-width: 0;
     }
 
     .config-tabs {
@@ -1496,6 +1768,31 @@ button.btn.dropdown-toggle.btn-sm {
     }
 
     .manage-table-surface .fixed-table-container.has-card-view .card-view {
+        grid-template-columns: 1fr;
+    }
+
+    .home-dashboard-hero,
+    .home-alert-panel,
+    .home-module-section {
+        padding: var(--ui-space-3);
+    }
+
+    .home-dashboard-intro h1 {
+        font-size: var(--ui-font-size-2xl);
+    }
+
+    .home-quick-actions,
+    .home-action,
+    .home-shortcut {
+        width: 100%;
+    }
+
+    .home-action {
+        justify-content: center;
+    }
+
+    .home-metric-grid,
+    .home-shortcut-list {
         grid-template-columns: 1fr;
     }
 

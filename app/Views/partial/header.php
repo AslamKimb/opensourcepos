@@ -51,10 +51,10 @@ foreach ($allowed_modules as $module) {
         <link rel="stylesheet" href="resources/css/bootstrap-292fc0ad3b.autocomplete.css">
         <link rel="stylesheet" href="resources/css/invoice-c6cc6f6858.css">
         <link rel="stylesheet" href="resources/css/ospos_print-4e428ab727.css">
-        <link rel="stylesheet" href="resources/css/ospos-d7ac5dbde0.css">
+        <link rel="stylesheet" href="resources/css/ospos-aaeb5b4705.css">
         <link rel="stylesheet" href="resources/css/popupbox-7b616030b0.css">
         <link rel="stylesheet" href="resources/css/receipt-2ca96adfe5.css">
-        <link rel="stylesheet" href="resources/css/register-6eed5049ed.css">
+        <link rel="stylesheet" href="resources/css/register-add9ad56cf.css">
         <link rel="stylesheet" href="resources/css/reports-0f0856f305.css">
         <!-- endinject -->
         <!-- inject:debug:js -->
@@ -95,7 +95,7 @@ foreach ($allowed_modules as $module) {
         <!-- endinject -->
     <?php else : ?>
         <!--inject:prod:css -->
-        <link rel="stylesheet" href="resources/opensourcepos-ab0a0fe596.min.css">
+        <link rel="stylesheet" href="resources/opensourcepos-a91fa429df.min.css">
         <!-- endinject -->
 
         <!-- Tweaks to the UI for a particular theme should drop here  -->
