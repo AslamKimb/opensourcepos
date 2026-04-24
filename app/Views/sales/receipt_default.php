@@ -17,7 +17,7 @@
  */
 ?>
 
-<div id="receipt_wrapper" style="font-size: <?= $config['receipt_font_size'] ?>px;">
+<div id="receipt_wrapper" class="receipt-shell" style="font-size: <?= $config['receipt_font_size'] ?>px;">
     <div id="receipt_header">
         <?php if ($config['company_logo'] != '') { ?>
             <div id="company_name">
@@ -31,7 +31,7 @@
 
         <div id="company_address"><?= nl2br(esc($config['address'])) ?></div>
         <div id="company_phone"><?= esc($config['phone']) ?></div>
-        <div id="sale_receipt"><?= lang('Sales.receipt') ?></div>
+        <div id="sale_receipt" class="receipt-status-badge"><?= lang('Sales.receipt') ?></div>
         <div id="sale_time"><?= ($transaction_time) ?></div>
     </div>
 

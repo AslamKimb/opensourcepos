@@ -49,11 +49,11 @@ foreach ($allowed_modules as $module) {
         <link rel="stylesheet" href="resources/css/bootstrap-tagsinput-5a6d46a06c.css">
         <link rel="stylesheet" href="resources/css/bootstrap-toggle-e12db6c1f3.css">
         <link rel="stylesheet" href="resources/css/bootstrap-292fc0ad3b.autocomplete.css">
-        <link rel="stylesheet" href="resources/css/invoice-c6cc6f6858.css">
+        <link rel="stylesheet" href="resources/css/invoice-b4ece4ec64.css">
         <link rel="stylesheet" href="resources/css/ospos_print-4e428ab727.css">
-        <link rel="stylesheet" href="resources/css/ospos-aaeb5b4705.css">
+        <link rel="stylesheet" href="resources/css/ospos-bd0a207bd5.css">
         <link rel="stylesheet" href="resources/css/popupbox-7b616030b0.css">
-        <link rel="stylesheet" href="resources/css/receipt-2ca96adfe5.css">
+        <link rel="stylesheet" href="resources/css/receipt-ea23e95a1f.css">
         <link rel="stylesheet" href="resources/css/register-add9ad56cf.css">
         <link rel="stylesheet" href="resources/css/reports-0f0856f305.css">
         <!-- endinject -->
@@ -95,7 +95,7 @@ foreach ($allowed_modules as $module) {
         <!-- endinject -->
     <?php else : ?>
         <!--inject:prod:css -->
-        <link rel="stylesheet" href="resources/opensourcepos-a91fa429df.min.css">
+        <link rel="stylesheet" href="resources/opensourcepos-7c5d3bad92.min.css">
         <!-- endinject -->
 
         <!-- Tweaks to the UI for a particular theme should drop here  -->
@@ -123,25 +123,45 @@ foreach ($allowed_modules as $module) {
 
 <body class="ospos-app">
     <div class="wrapper app-shell">
-        <header class="mobile-shellbar app-navbar" role="banner">
-            <button type="button" class="navbar-toggle collapsed app-menu-toggle" data-toggle="collapse" data-target="#app-navigation" aria-controls="app-navigation" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+        <header class="app-shellbar mobile-shellbar app-navbar" role="banner">
+            <div class="topbar app-commandbar">
+                <div class="container topbar-row app-shellbar-row">
+                    <div class="navbar-left topbar-item app-shell-primary">
+                        <button type="button" class="navbar-toggle app-menu-toggle app-shell-toggle" data-target="#app-navigation" aria-controls="app-navigation" aria-expanded="true">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
 
-            <a class="navbar-brand app-mobile-brand" href="<?= site_url() ?>">
-                <?php if ($brand_logo_src !== ''): ?>
-                    <img src="<?= esc($brand_logo_src, 'attr') ?>" alt="<?= esc($brand_short_name, 'attr') ?>">
-                <?php else: ?>
-                    <span class="brand-mark-fallback"><?= esc(brand_initial($config)) ?></span>
-                <?php endif; ?>
-                <span><?= esc($brand_short_name) ?></span>
-            </a>
+                        <a class="navbar-brand app-mobile-brand app-shell-brand" href="<?= site_url() ?>">
+                            <?php if ($brand_logo_src !== ''): ?>
+                                <img src="<?= esc($brand_logo_src, 'attr') ?>" alt="<?= esc($brand_short_name, 'attr') ?>">
+                            <?php else: ?>
+                                <span class="brand-mark-fallback"><?= esc(brand_initial($config)) ?></span>
+                            <?php endif; ?>
+                            <span class="app-brand-copy app-shell-brand-copy">
+                                <strong><?= esc($brand_short_name) ?></strong>
+                                <small><?= esc($brand_name) ?></small>
+                            </span>
+                        </a>
+                    </div>
 
-            <?= anchor('home/logout', lang('Login.logout'), ['class' => 'app-mobile-logout']) ?>
+                    <div class="topbar-item topbar-company app-shell-meta">
+                        <strong><?= esc($current_module_label) ?></strong>
+                        <span><?= esc($config['company']) ?></span>
+                    </div>
+
+                    <div class="navbar-right topbar-item topbar-actions app-shell-actions">
+                        <div class="topbar-clock" id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></div>
+                        <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg app-shell-user', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
+                        <?= anchor('home/logout', lang('Login.logout'), ['class' => 'app-shell-logout']) ?>
+                    </div>
+                </div>
+            </div>
         </header>
+
+        <div class="app-shell-backdrop" aria-hidden="true"></div>
 
         <div class="app-layout">
             <aside class="navbar navbar-default app-navbar app-sidebar" role="navigation" aria-label="Primary navigation">
@@ -180,24 +200,5 @@ foreach ($allowed_modules as $module) {
             </aside>
 
             <main class="app-main" role="main">
-                <div class="topbar app-commandbar">
-                    <div class="container topbar-row">
-                        <div class="navbar-left topbar-item topbar-clock">
-                            <div id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></div>
-                        </div>
-
-                        <div class="navbar-right topbar-item topbar-actions">
-                            <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-                            <span>&nbsp;|&nbsp;</span>
-                            <?= anchor('home/logout', lang('Login.logout')) ?>
-                        </div>
-
-                        <div class="navbar-center topbar-item topbar-company">
-                            <strong><?= esc($current_module_label) ?></strong>
-                            <span><?= esc($config['company']) ?></span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="container app-content">
             <div class="row">

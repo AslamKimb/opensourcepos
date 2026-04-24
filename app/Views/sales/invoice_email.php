@@ -36,8 +36,13 @@
     }
     ?>
 
-    <div id="page-wrap">
-        <div id="header"><?= lang('Sales.invoice') ?></div>
+    <?php $document_status = $amount_due > 0 ? lang('Sales.status_due') : lang('Sales.status_paid'); ?>
+
+    <div id="page-wrap" class="document-shell document-invoice">
+        <div id="header" class="document-header">
+            <span><?= lang('Sales.invoice') ?></span>
+            <span class="document-status-badge"><?= esc($document_status) ?></span>
+        </div>
         <table id="info">
             <tr>
                 <td id="logo">

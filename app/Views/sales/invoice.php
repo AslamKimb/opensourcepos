@@ -73,8 +73,13 @@ if (isset($error_message)) {
     <?= anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp;</span>' . lang('Sales.takings'), ['class' => 'btn btn-info btn-sm', 'id' => 'show_takings_button']) ?>
 </div>
 
-<div id="page-wrap">
-    <div id="header"><?= lang('Sales.invoice') ?></div>
+<?php $document_status = (!empty($payments) && $amount_change >= 0) ? lang('Sales.status_paid') : lang('Sales.status_due'); ?>
+
+<div id="page-wrap" class="document-shell document-invoice">
+    <div id="header" class="document-header">
+        <span><?= lang('Sales.invoice') ?></span>
+        <span class="document-status-badge"><?= esc($document_status) ?></span>
+    </div>
     <div id="block1">
         <div id="customer-title">
             <?php if (isset($customer)) { ?>

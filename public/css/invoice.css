@@ -1,11 +1,13 @@
+.document-shell,
 #page-wrap {
     background: var(--ui-surface);
     border: 1px solid var(--ui-border-color);
     border-radius: var(--ui-radius-lg);
-    box-shadow: var(--ui-elevation-1);
-    margin: var(--ui-space-4) auto;
-    max-width: 860px;
-    padding: var(--ui-space-5);
+    box-shadow: var(--ui-elevation-2);
+    color: var(--ui-text);
+    margin: var(--ui-space-5) auto;
+    max-width: 920px;
+    padding: var(--ui-space-6);
     width: 100%;
 }
 
@@ -34,26 +36,44 @@
     text-transform: uppercase;
 }
 
+.document-header,
 #header {
+    align-items: center;
     background: var(--ui-accent);
     border-radius: var(--ui-radius-md);
     color: #fff;
+    display: flex;
     font-size: var(--ui-font-size-2xl);
-    font-weight: 800;
+    font-weight: 900;
+    justify-content: space-between;
     letter-spacing: 0;
     margin: 0 0 var(--ui-space-5);
-    padding: var(--ui-space-3) 0;
-    text-align: center;
+    padding: var(--ui-space-4);
+    text-align: left;
+}
+
+.document-status-badge {
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 999px;
+    color: #fff;
+    display: inline-flex;
+    font-size: var(--ui-font-size-xs);
+    font-weight: 900;
+    line-height: 1;
+    padding: var(--ui-space-2) var(--ui-space-3);
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 #logo {
     border: 1px solid transparent;
-    float: left;
-    margin-top: var(--ui-space-3);
+    float: none;
+    margin-top: 0;
     max-height: 150px;
     overflow: hidden;
     position: relative;
-    text-align: right;
+    text-align: left;
 }
 
 #logo img {
@@ -103,9 +123,14 @@
 }
 
 #customer-title {
-    float: right;
-    height: 100px;
-    margin-top: var(--ui-space-5);
+    background: var(--ui-surface-muted);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-md);
+    float: none;
+    height: auto;
+    margin-top: 0;
+    min-height: 100px;
+    padding: var(--ui-space-4);
 }
 
 #customer-title textarea {
@@ -113,18 +138,42 @@
 }
 
 #block2 {
+    align-items: start;
+    display: grid;
+    gap: var(--ui-space-4);
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.72fr);
+    margin-top: var(--ui-space-4);
     overflow: hidden;
     width: 100%;
 }
 
+#block1 {
+    align-items: start;
+    display: grid;
+    gap: var(--ui-space-4);
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.72fr);
+    margin-bottom: var(--ui-space-4);
+}
+
 #company-title {
-    float: left;
+    background: var(--ui-bg-subtle);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-md);
+    color: var(--ui-text-muted);
+    float: none;
+    font-size: var(--ui-font-size-sm);
+    font-weight: 700;
+    line-height: 1.55;
+    padding: var(--ui-space-4);
 }
 
 #meta {
-    float: right;
-    margin-top: 1px;
-    width: 300px;
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-md);
+    float: none;
+    margin-top: 0;
+    overflow: hidden;
+    width: 100%;
 }
 
 #meta td {
@@ -132,9 +181,11 @@
 }
 
 #meta td.meta-head {
-    background: var(--ui-surface-strong);
+    background: var(--ui-bg-subtle);
+    color: var(--ui-text-muted);
     font-weight: 800;
     text-align: left;
+    text-transform: uppercase;
 }
 
 #meta td textarea {
@@ -145,14 +196,21 @@
 
 #items {
     border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-md);
+    border-spacing: 0;
     clear: both;
     margin: var(--ui-space-5) 0 0;
+    overflow: hidden;
     width: 100%;
 }
 
 #items th {
     background: var(--ui-surface-strong);
+    color: var(--ui-text-muted);
+    font-size: var(--ui-font-size-xs);
+    letter-spacing: 0;
     text-align: center;
+    text-transform: uppercase;
 }
 
 #items textarea {
@@ -161,7 +219,8 @@
 }
 
 #items tr.item-row td {
-    border: none;
+    border-left: 0;
+    border-right: 0;
     vertical-align: top;
 }
 
@@ -184,14 +243,22 @@
 }
 
 #items td.total-line {
+    background: var(--ui-bg-subtle);
+    border-color: var(--ui-border-color);
     border-right: 0;
+    color: var(--ui-text-muted);
     font-weight: 800;
     text-align: right;
 }
 
 #items td.total-value {
+    background: var(--ui-bg-subtle);
+    border-color: var(--ui-border-color);
     border-left: 0;
+    color: var(--ui-heading-color);
+    font-weight: 900;
     padding: var(--ui-space-3);
+    text-align: right;
 }
 
 #items td.total-value textarea,
@@ -208,16 +275,30 @@
     background: var(--ui-accent-soft);
 }
 
+#items #total,
+#items #change {
+    background: var(--ui-accent-soft);
+    color: var(--ui-accent-strong);
+    font-size: var(--ui-font-size-lg);
+}
+
 #items td.blank {
+    background: transparent;
     border: none;
 }
 
 #items td.blank-bottom {
-    border: 1px;
+    background: transparent;
+    border: none;
 }
 
 #terms {
+    background: var(--ui-bg-subtle);
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius-md);
+    color: var(--ui-text-muted);
     margin: var(--ui-space-5) 0 0;
+    padding: var(--ui-space-4);
     text-align: center;
 }
 
@@ -255,12 +336,64 @@
     top: -6px;
 }
 
+@media (max-width: 767px) {
+    #page-wrap {
+        margin: var(--ui-space-3) auto;
+        padding: var(--ui-space-3);
+    }
+
+    #block1,
+    #block2 {
+        grid-template-columns: 1fr;
+    }
+
+    #header {
+        align-items: flex-start;
+        display: grid;
+        gap: var(--ui-space-2);
+    }
+
+    #items {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
 @media print {
+    @page {
+        margin: 0.45in;
+    }
+
+    body {
+        background: #fff !important;
+    }
+
     #page-wrap {
         border: 0;
+        border-radius: 0;
         box-shadow: none;
         margin: 0;
         max-width: none;
         padding: 0;
+    }
+
+    #header {
+        background: var(--ui-accent) !important;
+        color: #fff !important;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    #items,
+    #meta,
+    #terms,
+    #company-title {
+        break-inside: avoid;
+    }
+
+    #items tr,
+    #items td,
+    #items th {
+        break-inside: avoid;
     }
 }

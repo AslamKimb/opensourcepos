@@ -32,8 +32,11 @@
     }
     ?>
 
-    <div id="page-wrap">
-        <div id="header"><?= lang('Sales.quote') ?></div>
+    <div id="page-wrap" class="document-shell document-quote">
+        <div id="header" class="document-header">
+            <span><?= lang('Sales.quote') ?></span>
+            <span class="document-status-badge"><?= lang('Sales.status_open') ?></span>
+        </div>
         <table id="info">
             <tr>
                 <td id="logo">

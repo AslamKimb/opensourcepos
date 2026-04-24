@@ -168,7 +168,7 @@ final class UiSelectorContractTest extends TestCase
         $this->assertStringContainsString('class="ospos-app"', $header);
         $this->assertStringContainsString('class="wrapper app-shell"', $header);
         $this->assertStringContainsString('app-navbar', $header);
-        $this->assertStringContainsString('class="mobile-shellbar app-navbar"', $header);
+        $this->assertStringContainsString('class="app-shellbar mobile-shellbar app-navbar"', $header);
         $this->assertStringContainsString('class="app-layout"', $header);
         $this->assertStringContainsString('class="navbar navbar-default app-navbar app-sidebar"', $header);
         $this->assertStringContainsString('id="app-navigation"', $header);
@@ -202,6 +202,216 @@ final class UiSelectorContractTest extends TestCase
 
         $this->assertStringContainsString('#page-wrap', $invoiceCss);
         $this->assertStringContainsString('#receipt_wrapper', $receiptCss);
+    }
+
+    public function testUnifiedShellSupportsCrossScreenSidebarToggle(): void
+    {
+        $header = file_get_contents(__DIR__ . '/../../app/Views/partial/header.php');
+        $headerJs = file_get_contents(__DIR__ . '/../../app/Views/partial/header_js.php');
+        $appCss = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+
+        $this->assertNotFalse($header);
+        $this->assertNotFalse($headerJs);
+        $this->assertNotFalse($appCss);
+
+        foreach ([
+            'class="app-shellbar mobile-shellbar app-navbar"',
+            'class="navbar-toggle app-menu-toggle app-shell-toggle"',
+            'app-shell-primary',
+            'class="topbar-item topbar-company app-shell-meta"',
+            'class="navbar-right topbar-item topbar-actions app-shell-actions"',
+            'class="app-shell-backdrop"',
+            'data-target="#app-navigation"',
+            'id="app-navigation"',
+        ] as $headerContract) {
+            $this->assertStringContainsString($headerContract, $header);
+        }
+
+        foreach ([
+            "ospos.shell.collapsed",
+            'app-shell-collapsed',
+            'app-shell-nav-open',
+            'app-shell-toggle',
+            'app-shell-backdrop',
+            'matchMedia',
+            'localStorage',
+            '#app-navigation a',
+            'Escape',
+        ] as $jsContract) {
+            $this->assertStringContainsString($jsContract, $headerJs);
+        }
+
+        foreach ([
+            '.app-shellbar {',
+            '.app-shell-primary {',
+            '.app-shell-actions {',
+            '.app-shell-backdrop {',
+            '.app-shell.app-shell-collapsed .app-layout',
+            '.app-shell.app-shell-collapsed .navbar .menu-icon span',
+            '.app-shell.app-shell-nav-open .app-sidebar',
+            '.app-shell.app-shell-nav-open .app-shell-backdrop',
+            '.app-shell-toggle',
+            '@media (max-width: 991px)',
+        ] as $cssContract) {
+            $this->assertStringContainsString($cssContract, $appCss);
+        }
+    }
+
+    public function testSharedInteractionStateContractsExist(): void
+    {
+        $themeCss = file_get_contents(__DIR__ . '/../../public/css/theme-utilitarian.css');
+        $appCss = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+
+        $this->assertNotFalse($themeCss);
+        $this->assertNotFalse($appCss);
+
+        foreach ([
+            '--ui-state-hover-bg:',
+            '--ui-state-active-bg:',
+            '--ui-state-selected-bg:',
+            '--ui-state-disabled-bg:',
+            '--ui-state-invalid-bg:',
+            '--ui-state-valid-bg:',
+            '--ui-focus-ring-strong:',
+        ] as $stateToken) {
+            $this->assertStringContainsString($stateToken, $themeCss);
+        }
+
+        foreach ([
+            ':focus-visible',
+            '.btn:active',
+            '.btn.active',
+            '.btn.disabled',
+            '.btn[disabled]',
+            '.form-control:hover',
+            '.form-control[disabled]',
+            '.form-control.error',
+            'label.error',
+            '.alert-dismissible .close',
+            '.nav-tabs > li > a:hover',
+            '.nav-tabs > li.disabled > a',
+            '.dropdown-menu > .active > a',
+            '.dropdown-menu > .disabled > a',
+            '.bootstrap-select .dropdown-menu > li.selected > a',
+            '.fixed-table-container tbody tr.selected',
+            '.table > tbody > tr.active > td',
+            '.pagination > .disabled > a',
+            '.modal-header .close:active',
+            '.fileinput .thumbnail',
+            '.btn-file:focus-within',
+            '.bootstrap-tagsinput.focus',
+            'input[type="checkbox"]:focus-visible',
+            'input[type="radio"]:focus-visible',
+        ] as $interactionContract) {
+            $this->assertStringContainsString($interactionContract, $themeCss);
+        }
+
+        foreach ([
+            '.config-upload .btn-file:focus-within',
+            '.manage-table-surface .fixed-table-toolbar .search .form-control:hover',
+            '.manage-table-grid > tbody > tr.selected > td',
+            '.config-page .form-group.has-error',
+        ] as $appStateContract) {
+            $this->assertStringContainsString($appStateContract, $appCss);
+        }
+    }
+
+    public function testDesignTokenLayerContractsExist(): void
+    {
+        $themeCss = file_get_contents(__DIR__ . '/../../public/css/theme-utilitarian.css');
+        $brandCss = file_get_contents(__DIR__ . '/../../app/Views/partial/brand_css.php');
+
+        $this->assertNotFalse($themeCss);
+        $this->assertNotFalse($brandCss);
+
+        foreach ([
+            '--ui-color-canvas:',
+            '--ui-color-canvas-subtle:',
+            '--ui-color-surface:',
+            '--ui-color-surface-muted:',
+            '--ui-color-surface-strong:',
+            '--ui-color-text:',
+            '--ui-color-text-muted:',
+            '--ui-color-text-soft:',
+            '--ui-color-brand:',
+            '--ui-color-brand-strong:',
+            '--ui-color-brand-soft:',
+            '--ui-color-action:',
+            '--ui-color-action-strong:',
+            '--ui-color-border:',
+            '--ui-color-border-strong:',
+            '--ui-color-success:',
+            '--ui-color-success-bg:',
+            '--ui-color-warning:',
+            '--ui-color-warning-bg:',
+            '--ui-color-danger:',
+            '--ui-color-danger-bg:',
+            '--ui-color-info:',
+            '--ui-color-info-bg:',
+            '--ui-space-7:',
+            '--ui-space-8:',
+            '--ui-radius-control:',
+            '--ui-radius-surface:',
+            '--ui-radius-pill:',
+            '--ui-shadow-none:',
+            '--ui-shadow-sm:',
+            '--ui-shadow-md:',
+            '--ui-shadow-lg:',
+            '--ui-font-size-3xl:',
+            '--ui-font-weight-normal:',
+            '--ui-font-weight-medium:',
+            '--ui-font-weight-semibold:',
+            '--ui-font-weight-bold:',
+            '--ui-font-weight-extrabold:',
+            '--ui-control-height-sm:',
+            '--ui-control-height-md:',
+            '--ui-control-height-lg:',
+            '--ui-table-density-compact-y:',
+            '--ui-table-density-default-y:',
+            '--ui-table-density-comfortable-y:',
+            '--ui-breakpoint-xs:',
+            '--ui-breakpoint-sm:',
+            '--ui-breakpoint-md:',
+            '--ui-breakpoint-lg:',
+            '--ui-breakpoint-xl:',
+            '--ui-breakpoint-xxl:',
+            '--ui-breakpoint-mobile-max:',
+            '--ui-breakpoint-shell-collapse:',
+        ] as $designToken) {
+            $this->assertStringContainsString($designToken, $themeCss);
+        }
+
+        foreach ([
+            '--ui-bg: var(--ui-color-canvas);',
+            '--ui-bg-subtle: var(--ui-color-canvas-subtle);',
+            '--ui-surface: var(--ui-color-surface);',
+            '--ui-text: var(--ui-color-text);',
+            '--ui-accent: var(--ui-color-brand);',
+            '--ui-action: var(--ui-color-action);',
+            '--ui-danger: var(--ui-color-danger);',
+            '--ui-elevation-1: var(--ui-shadow-sm);',
+            '--ui-control-height: var(--ui-control-height-md);',
+            '--ui-table-cell-padding-y: var(--ui-table-density-default-y);',
+            '--ui-status-success-bg: var(--ui-color-success-bg);',
+            '--bs-body-bg: var(--ui-bg);',
+            '--bs-primary: var(--ui-action);',
+        ] as $aliasContract) {
+            $this->assertStringContainsString($aliasContract, $themeCss);
+        }
+
+        foreach ([
+            '--ui-color-canvas: var(--ui-bg);',
+            '--ui-color-surface: var(--ui-surface);',
+            '--ui-color-text: var(--ui-text);',
+            '--ui-color-brand: var(--ui-accent);',
+            '--ui-color-action: var(--ui-action);',
+            '--ui-color-success: var(--ui-success);',
+            '--ui-color-warning: var(--ui-warning);',
+            '--ui-color-danger: var(--ui-danger);',
+            '--ui-color-info: var(--ui-info);',
+        ] as $brandBridgeContract) {
+            $this->assertStringContainsString($brandBridgeContract, $brandCss);
+        }
     }
 
     public function testRuntimeBrandingViewsDoNotHardCodeProductBrand(): void
@@ -248,6 +458,85 @@ final class UiSelectorContractTest extends TestCase
         $this->assertStringContainsString("view('partial/brand_css'", $workOrderEmail);
         $this->assertStringContainsString('background: var(--ui-accent)', $invoiceCss);
         $this->assertStringContainsString('background-color: var(--ui-accent', $invoiceEmailCss);
+    }
+
+    public function testSalesDocumentsUseModernDocumentContracts(): void
+    {
+        $invoice = file_get_contents(__DIR__ . '/../../app/Views/sales/invoice.php');
+        $taxInvoice = file_get_contents(__DIR__ . '/../../app/Views/sales/tax_invoice.php');
+        $quote = file_get_contents(__DIR__ . '/../../app/Views/sales/quote.php');
+        $workOrder = file_get_contents(__DIR__ . '/../../app/Views/sales/work_order.php');
+        $invoiceEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/invoice_email.php');
+        $quoteEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/quote_email.php');
+        $workOrderEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/work_order_email.php');
+        $receiptDefault = file_get_contents(__DIR__ . '/../../app/Views/sales/receipt_default.php');
+        $receiptShort = file_get_contents(__DIR__ . '/../../app/Views/sales/receipt_short.php');
+        $receiptEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/receipt_email.php');
+        $invoiceCss = file_get_contents(__DIR__ . '/../../public/css/invoice.css');
+        $invoiceEmailCss = file_get_contents(__DIR__ . '/../../public/css/invoice_email.css');
+        $receiptCss = file_get_contents(__DIR__ . '/../../public/css/receipt.css');
+
+        foreach ([
+            $invoice,
+            $taxInvoice,
+            $quote,
+            $workOrder,
+            $invoiceEmail,
+            $quoteEmail,
+            $workOrderEmail,
+            $receiptDefault,
+            $receiptShort,
+            $receiptEmail,
+            $invoiceCss,
+            $invoiceEmailCss,
+            $receiptCss,
+        ] as $source) {
+            $this->assertNotFalse($source);
+        }
+
+        foreach ([$invoice, $taxInvoice, $quote, $workOrder, $invoiceEmail, $quoteEmail, $workOrderEmail] as $documentView) {
+            $this->assertStringContainsString('class="document-shell', $documentView);
+            $this->assertStringContainsString('class="document-header"', $documentView);
+            $this->assertStringContainsString('document-status-badge', $documentView);
+        }
+
+        foreach ([$receiptDefault, $receiptShort, $receiptEmail] as $receiptView) {
+            $this->assertStringContainsString('class="receipt-shell"', $receiptView);
+            $this->assertStringContainsString('receipt-status-badge', $receiptView);
+        }
+
+        foreach ([
+            '.document-shell',
+            '.document-header',
+            '.document-status-badge',
+            '#items td.total-line',
+            '#items td.total-value',
+            '@page',
+            '@media print',
+        ] as $invoiceCssContract) {
+            $this->assertStringContainsString($invoiceCssContract, $invoiceCss);
+        }
+
+        foreach ([
+            '.document-shell',
+            '.document-header',
+            '.document-status-badge',
+            '#items td.total-line',
+            '#items td.total-value',
+        ] as $emailCssContract) {
+            $this->assertStringContainsString($emailCssContract, $invoiceEmailCss);
+        }
+
+        foreach ([
+            '.receipt-shell',
+            '.receipt-status-badge',
+            '#receipt_general_info',
+            '#receipt_items th',
+            '#receipt_items .total-value',
+            '@media print',
+        ] as $receiptCssContract) {
+            $this->assertStringContainsString($receiptCssContract, $receiptCss);
+        }
     }
 
     public function testBrandingConfigSurfaceAndControllerContractsExist(): void

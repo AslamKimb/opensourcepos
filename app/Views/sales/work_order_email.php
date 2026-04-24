@@ -31,8 +31,11 @@
     }
     ?>
 
-    <div id="page-wrap">
-        <div id="header"><?= lang('Sales.work_order') ?></div>
+    <div id="page-wrap" class="document-shell document-work-order">
+        <div id="header" class="document-header">
+            <span><?= lang('Sales.work_order') ?></span>
+            <span class="document-status-badge"><?= lang('Sales.status_open') ?></span>
+        </div>
         <table id="info">
             <tr>
                 <td id="logo">

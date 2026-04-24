@@ -71,8 +71,11 @@ if (isset($error_message)) {
     <?= anchor("sales/discard_suspended_sale", '<span class="glyphicon glyphicon-remove">&nbsp;</span>' . lang('Sales.discard'), ['class' => 'btn btn-danger btn-sm', 'id' => 'discard_work_order_button']) ?>
 </div>
 
-<div id="page-wrap">
-    <div id="header"><?= $sales_work_order ?></div>
+<div id="page-wrap" class="document-shell document-work-order">
+    <div id="header" class="document-header">
+        <span><?= esc($sales_work_order) ?></span>
+        <span class="document-status-badge"><?= lang('Sales.status_open') ?></span>
+    </div>
     <div id="block1">
         <div id="customer-title">
             <?php if (isset($customer)) { ?>

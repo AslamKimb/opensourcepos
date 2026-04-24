@@ -65,6 +65,83 @@
 
     $(document).ajaxComplete(setup_csrf_token);
     $(document).ready(function() {
+        const shellStorageKey = 'ospos.shell.collapsed';
+        const shellBreakpoint = getComputedStyle(document.documentElement).getPropertyValue('--ui-breakpoint-shell-collapse').trim() || '991px';
+        const shellMedia = window.matchMedia(`(max-width: ${shellBreakpoint})`);
+        const $shell = $('.app-shell');
+        const $shellToggle = $('.app-shell-toggle');
+        const $shellBackdrop = $('.app-shell-backdrop');
+        const $shellNavLinks = $('#app-navigation a');
+        let shellCollapsed = false;
+        let shellNavOpen = false;
+
+        try {
+            shellCollapsed = window.localStorage.getItem(shellStorageKey) === '1';
+        } catch (error) {
+            shellCollapsed = false;
+        }
+
+        const syncShellState = function() {
+            const isOverlayMode = shellMedia.matches;
+            $shell.toggleClass('app-shell-collapsed', !isOverlayMode && shellCollapsed);
+            $shell.toggleClass('app-shell-nav-open', isOverlayMode && shellNavOpen);
+            $('body').toggleClass('app-shell-nav-locked', isOverlayMode && shellNavOpen);
+
+            const ariaExpanded = isOverlayMode ? shellNavOpen : !shellCollapsed;
+            $shellToggle.attr('aria-expanded', ariaExpanded ? 'true' : 'false');
+        };
+
+        const closeShellOverlay = function() {
+            shellNavOpen = false;
+            syncShellState();
+        };
+
+        $shellToggle.on('click', function(event) {
+            event.preventDefault();
+
+            if (shellMedia.matches) {
+                shellNavOpen = !shellNavOpen;
+            } else {
+                shellCollapsed = !shellCollapsed;
+                try {
+                    window.localStorage.setItem(shellStorageKey, shellCollapsed ? '1' : '0');
+                } catch (error) {
+                    // Ignore storage errors and keep the in-memory state.
+                }
+            }
+
+            syncShellState();
+        });
+
+        $shellBackdrop.on('click', closeShellOverlay);
+        $shellNavLinks.on('click', function() {
+            if (shellMedia.matches) {
+                closeShellOverlay();
+            }
+        });
+
+        $(document).on('keyup', function(event) {
+            if (event.key === 'Escape' && shellMedia.matches && shellNavOpen) {
+                closeShellOverlay();
+            }
+        });
+
+        const handleShellViewportChange = function() {
+            if (!shellMedia.matches) {
+                shellNavOpen = false;
+            }
+
+            syncShellState();
+        };
+
+        if (typeof shellMedia.addEventListener === 'function') {
+            shellMedia.addEventListener('change', handleShellViewportChange);
+        } else if (typeof shellMedia.addListener === 'function') {
+            shellMedia.addListener(handleShellViewportChange);
+        }
+
+        handleShellViewportChange();
+
         $("#logout").click(function(event) {
             event.preventDefault();
             $.ajax({
