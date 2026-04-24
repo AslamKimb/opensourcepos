@@ -206,9 +206,9 @@ final class UiSelectorContractTest extends TestCase
 
     public function testUnifiedShellSupportsCrossScreenSidebarToggle(): void
     {
-        $header = file_get_contents(__DIR__ . '/../../app/Views/partial/header.php');
+        $header   = file_get_contents(__DIR__ . '/../../app/Views/partial/header.php');
         $headerJs = file_get_contents(__DIR__ . '/../../app/Views/partial/header_js.php');
-        $appCss = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+        $appCss   = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
 
         $this->assertNotFalse($header);
         $this->assertNotFalse($headerJs);
@@ -218,8 +218,9 @@ final class UiSelectorContractTest extends TestCase
             'class="app-shellbar mobile-shellbar app-navbar"',
             'class="navbar-toggle app-menu-toggle app-shell-toggle"',
             'app-shell-primary',
-            'class="topbar-item topbar-company app-shell-meta"',
+            'class="topbar-item topbar-company app-shell-context"',
             'class="navbar-right topbar-item topbar-actions app-shell-actions"',
+            'class="app-shell-account"',
             'class="app-shell-backdrop"',
             'data-target="#app-navigation"',
             'id="app-navigation"',
@@ -227,8 +228,10 @@ final class UiSelectorContractTest extends TestCase
             $this->assertStringContainsString($headerContract, $header);
         }
 
+        $this->assertStringNotContainsString('class="app-brand-panel"', $header);
+
         foreach ([
-            "ospos.shell.collapsed",
+            'ospos.shell.collapsed',
             'app-shell-collapsed',
             'app-shell-nav-open',
             'app-shell-toggle',
@@ -247,7 +250,8 @@ final class UiSelectorContractTest extends TestCase
             '.app-shell-actions {',
             '.app-shell-backdrop {',
             '.app-shell.app-shell-collapsed .app-layout',
-            '.app-shell.app-shell-collapsed .navbar .menu-icon span',
+            '.app-shell.app-shell-collapsed .app-sidebar {',
+            '.app-shell.app-shell-collapsed .app-sidebar-collapse',
             '.app-shell.app-shell-nav-open .app-sidebar',
             '.app-shell.app-shell-nav-open .app-shell-backdrop',
             '.app-shell-toggle',
@@ -260,7 +264,7 @@ final class UiSelectorContractTest extends TestCase
     public function testSharedInteractionStateContractsExist(): void
     {
         $themeCss = file_get_contents(__DIR__ . '/../../public/css/theme-utilitarian.css');
-        $appCss = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
+        $appCss   = file_get_contents(__DIR__ . '/../../public/css/ospos.css');
 
         $this->assertNotFalse($themeCss);
         $this->assertNotFalse($appCss);
@@ -462,19 +466,19 @@ final class UiSelectorContractTest extends TestCase
 
     public function testSalesDocumentsUseModernDocumentContracts(): void
     {
-        $invoice = file_get_contents(__DIR__ . '/../../app/Views/sales/invoice.php');
-        $taxInvoice = file_get_contents(__DIR__ . '/../../app/Views/sales/tax_invoice.php');
-        $quote = file_get_contents(__DIR__ . '/../../app/Views/sales/quote.php');
-        $workOrder = file_get_contents(__DIR__ . '/../../app/Views/sales/work_order.php');
-        $invoiceEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/invoice_email.php');
-        $quoteEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/quote_email.php');
-        $workOrderEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/work_order_email.php');
-        $receiptDefault = file_get_contents(__DIR__ . '/../../app/Views/sales/receipt_default.php');
-        $receiptShort = file_get_contents(__DIR__ . '/../../app/Views/sales/receipt_short.php');
-        $receiptEmail = file_get_contents(__DIR__ . '/../../app/Views/sales/receipt_email.php');
-        $invoiceCss = file_get_contents(__DIR__ . '/../../public/css/invoice.css');
+        $invoice         = file_get_contents(__DIR__ . '/../../app/Views/sales/invoice.php');
+        $taxInvoice      = file_get_contents(__DIR__ . '/../../app/Views/sales/tax_invoice.php');
+        $quote           = file_get_contents(__DIR__ . '/../../app/Views/sales/quote.php');
+        $workOrder       = file_get_contents(__DIR__ . '/../../app/Views/sales/work_order.php');
+        $invoiceEmail    = file_get_contents(__DIR__ . '/../../app/Views/sales/invoice_email.php');
+        $quoteEmail      = file_get_contents(__DIR__ . '/../../app/Views/sales/quote_email.php');
+        $workOrderEmail  = file_get_contents(__DIR__ . '/../../app/Views/sales/work_order_email.php');
+        $receiptDefault  = file_get_contents(__DIR__ . '/../../app/Views/sales/receipt_default.php');
+        $receiptShort    = file_get_contents(__DIR__ . '/../../app/Views/sales/receipt_short.php');
+        $receiptEmail    = file_get_contents(__DIR__ . '/../../app/Views/sales/receipt_email.php');
+        $invoiceCss      = file_get_contents(__DIR__ . '/../../public/css/invoice.css');
         $invoiceEmailCss = file_get_contents(__DIR__ . '/../../public/css/invoice_email.css');
-        $receiptCss = file_get_contents(__DIR__ . '/../../public/css/receipt.css');
+        $receiptCss      = file_get_contents(__DIR__ . '/../../public/css/receipt.css');
 
         foreach ([
             $invoice,
@@ -794,7 +798,6 @@ final class UiSelectorContractTest extends TestCase
             'home-dashboard-layout',
             'home-alert-panel',
             'home-module-section',
-            'home-role-shortcuts',
             'home-recent-modules',
             'id="home_module_list"',
             'module-grid',
@@ -802,6 +805,8 @@ final class UiSelectorContractTest extends TestCase
         ] as $viewContract) {
             $this->assertStringContainsString($viewContract, $home);
         }
+
+        $this->assertStringNotContainsString('home-role-shortcuts', $home);
 
         foreach ([
             '.home-dashboard',
@@ -813,7 +818,6 @@ final class UiSelectorContractTest extends TestCase
             '.home-dashboard-layout',
             '.home-alert-panel',
             '.home-module-section',
-            '.home-role-shortcuts',
             '.home-recent-modules',
             '@media (max-width: 767px)',
         ] as $cssContract) {

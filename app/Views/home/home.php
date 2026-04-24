@@ -8,7 +8,6 @@
 $dashboard ??= [];
 $quickActions    = $dashboard['quick_actions'] ?? [];
 $metrics         = $dashboard['metrics'] ?? [];
-$roleShortcuts   = $dashboard['role_shortcuts'] ?? [];
 $recentModules   = $dashboard['recent_modules'] ?? [];
 $moduleIndex     = $dashboard['module_index'] ?? [];
 $moduleIndexJson = json_encode($moduleIndex, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
@@ -56,23 +55,6 @@ $welcomeTarget   = $operatorName !== '' ? $operatorName : brand_short_name($conf
     <?php } ?>
 
     <div class="home-dashboard-layout">
-        <?php if (! empty($roleShortcuts)) { ?>
-            <section class="home-alert-panel home-role-shortcuts">
-                <header class="home-panel-heading">
-                    <h2><?= esc(lang('Common.dashboard_role_shortcuts')) ?></h2>
-                </header>
-                <div class="home-shortcut-list">
-                    <?php foreach ($roleShortcuts as $module) { ?>
-                        <?php $moduleId = $module->module_id; ?>
-                        <a class="home-shortcut" href="<?= esc(base_url($moduleId), 'attr') ?>" data-module-id="<?= esc($moduleId, 'attr') ?>">
-                            <img src="<?= esc(base_url("images/menubar/{$moduleId}.svg"), 'attr') ?>" alt="" aria-hidden="true">
-                            <span><?= esc(lang("Module.{$moduleId}")) ?></span>
-                        </a>
-                    <?php } ?>
-                </div>
-            </section>
-        <?php } ?>
-
         <section class="home-alert-panel home-recent-modules">
             <header class="home-panel-heading">
                 <h2><?= esc(lang('Common.dashboard_recent_modules')) ?></h2>
@@ -99,9 +81,9 @@ $welcomeTarget   = $operatorName !== '' ? $operatorName : brand_short_name($conf
                 <?php $moduleId = $module->module_id; ?>
                 <div class="module_item module-card" title="<?= esc(lang("Module.{$moduleId}_desc"), 'attr') ?>">
                     <a href="<?= esc(base_url($moduleId), 'attr') ?>" data-module-id="<?= esc($moduleId, 'attr') ?>">
-                        <img src="<?= esc(base_url("images/menubar/{$moduleId}.svg"), 'attr') ?>" alt="">
+                        <img src="<?= esc(base_url("images/menubar/{$moduleId}.svg"), 'attr') ?>" alt="" aria-hidden="true">
+                        <span><?= esc(lang("Module.{$moduleId}")) ?></span>
                     </a>
-                    <a href="<?= esc(base_url($moduleId), 'attr') ?>" data-module-id="<?= esc($moduleId, 'attr') ?>"><?= esc(lang("Module.{$moduleId}")) ?></a>
                 </div>
             <?php } ?>
         </div>

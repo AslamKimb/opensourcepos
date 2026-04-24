@@ -1,20 +1,21 @@
 <?php
 /**
- * @var object $user_info
- * @var array $allowed_modules
- * @var CodeIgniter\HTTP\IncomingRequest $request
- * @var array $config
+ * @var object          $user_info
+ * @var array           $allowed_modules
+ * @var IncomingRequest $request
+ * @var array           $config
  */
 
+use CodeIgniter\HTTP\IncomingRequest;
 use Config\Services;
 
-$request = Services::request();
-$brand_name = brand_display_name($config);
-$brand_short_name = brand_short_name($config);
-$current_module = $request->getUri()->getSegment(1);
+$request              = Services::request();
+$brand_name           = brand_display_name($config);
+$brand_short_name     = brand_short_name($config);
+$current_module       = $request->getUri()->getSegment(1);
 $current_module_label = $brand_short_name;
-$brand_logo = basename((string)($config['company_logo'] ?? ''));
-$brand_logo_src = $brand_logo !== '' ? base_url('uploads/' . rawurlencode($brand_logo)) : '';
+$brand_logo           = basename((string) ($config['company_logo'] ?? ''));
+$brand_logo_src       = $brand_logo !== '' ? base_url('uploads/' . rawurlencode($brand_logo)) : '';
 
 foreach ($allowed_modules as $module) {
     if ($module->module_id === $current_module) {
@@ -34,7 +35,7 @@ foreach ($allowed_modules as $module) {
     <meta name="theme-color" content="<?= esc(brand_theme_color($config), 'attr') ?>">
     <link rel="shortcut icon" type="image/x-icon" href="<?= esc(brand_favicon_href($config), 'attr') ?>">
     <link rel="stylesheet" href="<?= 'resources/bootswatch/' . (empty($config['theme']) ? 'flatly' : esc($config['theme'])) . '/bootstrap.min.css' ?>">
-    <?php if (ENVIRONMENT == 'development' || get_cookie('debug') == 'true' || $request->getGet('debug') == 'true') : ?>
+    <?php if (ENVIRONMENT === 'development' || get_cookie('debug') === 'true' || $request->getGet('debug') === 'true') : ?>
         <!-- inject:debug:css -->
         <link rel="stylesheet" href="resources/css/jquery-ui-fe010342cb.css">
         <link rel="stylesheet" href="resources/css/bootstrap-dialog-1716ef6e7c.css">
@@ -49,13 +50,13 @@ foreach ($allowed_modules as $module) {
         <link rel="stylesheet" href="resources/css/bootstrap-tagsinput-5a6d46a06c.css">
         <link rel="stylesheet" href="resources/css/bootstrap-toggle-e12db6c1f3.css">
         <link rel="stylesheet" href="resources/css/bootstrap-292fc0ad3b.autocomplete.css">
-        <link rel="stylesheet" href="resources/css/invoice-b4ece4ec64.css">
-        <link rel="stylesheet" href="resources/css/ospos_print-4e428ab727.css">
-        <link rel="stylesheet" href="resources/css/ospos-bd0a207bd5.css">
+        <link rel="stylesheet" href="resources/css/invoice-f8f3a195cc.css">
+        <link rel="stylesheet" href="resources/css/ospos_print-c0b7ffee01.css">
+        <link rel="stylesheet" href="resources/css/ospos-b9c2d64190.css">
         <link rel="stylesheet" href="resources/css/popupbox-7b616030b0.css">
-        <link rel="stylesheet" href="resources/css/receipt-ea23e95a1f.css">
-        <link rel="stylesheet" href="resources/css/register-add9ad56cf.css">
-        <link rel="stylesheet" href="resources/css/reports-0f0856f305.css">
+        <link rel="stylesheet" href="resources/css/receipt-b13999b939.css">
+        <link rel="stylesheet" href="resources/css/register-6699d82fda.css">
+        <link rel="stylesheet" href="resources/css/reports-2bed358cfc.css">
         <!-- endinject -->
         <!-- inject:debug:js -->
         <script src="resources/js/jquery-12e87d2f3a.js"></script>
@@ -90,16 +91,16 @@ foreach ($allowed_modules as $module) {
         <script src="resources/js/bootstrap-toggle-1c7a19a049.js"></script>
         <script src="resources/js/clipboard-908af414ab.js"></script>
         <script src="resources/js/imgpreview-62e42c15a0.full.jquery.js"></script>
-        <script src="resources/js/manage_tables-0b70f19599.js"></script>
+        <script src="resources/js/manage_tables-4bbdcb69a9.js"></script>
         <script src="resources/js/nominatim-599d9d6f9c.autocomplete.js"></script>
         <!-- endinject -->
     <?php else : ?>
         <!--inject:prod:css -->
-        <link rel="stylesheet" href="resources/opensourcepos-7c5d3bad92.min.css">
+        <link rel="stylesheet" href="resources/opensourcepos-1ef5678bbb.min.css">
         <!-- endinject -->
 
         <!-- Tweaks to the UI for a particular theme should drop here  -->
-        <?php if ($config['theme'] != 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
+        <?php if ($config['theme'] !== 'flatly' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/css/' . esc($config['theme']) . '.css')) { ?>
             <link rel="stylesheet" href="<?= 'css/' . esc($config['theme']) . '.css' ?>">
         <?php } ?>
         <!-- inject:prod:js -->
@@ -125,9 +126,9 @@ foreach ($allowed_modules as $module) {
     <div class="wrapper app-shell">
         <header class="app-shellbar mobile-shellbar app-navbar" role="banner">
             <div class="topbar app-commandbar">
-                <div class="container topbar-row app-shellbar-row">
+                <div class="container-fluid topbar-row app-shellbar-row">
                     <div class="navbar-left topbar-item app-shell-primary">
-                        <button type="button" class="navbar-toggle app-menu-toggle app-shell-toggle" data-target="#app-navigation" aria-controls="app-navigation" aria-expanded="true">
+                        <button type="button" class="navbar-toggle app-menu-toggle app-shell-toggle" data-target="#app-navigation" aria-controls="app-navigation" aria-expanded="false">
                             <span class="sr-only">Toggle navigation</span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -147,15 +148,17 @@ foreach ($allowed_modules as $module) {
                         </a>
                     </div>
 
-                    <div class="topbar-item topbar-company app-shell-meta">
-                        <strong><?= esc($current_module_label) ?></strong>
+                    <div class="topbar-item topbar-company app-shell-context">
                         <span><?= esc($config['company']) ?></span>
+                        <strong><?= esc($current_module_label) ?></strong>
                     </div>
 
                     <div class="navbar-right topbar-item topbar-actions app-shell-actions">
-                        <div class="topbar-clock" id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></div>
-                        <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg app-shell-user', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-                        <?= anchor('home/logout', lang('Login.logout'), ['class' => 'app-shell-logout']) ?>
+                        <div class="topbar-clock app-shell-clock" id="liveclock"><?= date($config['dateformat'] . ' ' . $config['timeformat']) ?></div>
+                        <div class="app-shell-account" aria-label="Account actions">
+                            <?= anchor("home/changePassword/{$user_info->person_id}", "{$user_info->first_name} {$user_info->last_name}", ['class' => 'modal-dlg app-shell-user', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
+                            <?= anchor('home/logout', lang('Login.logout'), ['class' => 'app-shell-logout']) ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -165,37 +168,18 @@ foreach ($allowed_modules as $module) {
 
         <div class="app-layout">
             <aside class="navbar navbar-default app-navbar app-sidebar" role="navigation" aria-label="Primary navigation">
-                <a class="app-brand-panel" href="<?= site_url() ?>">
-                    <span class="app-brand-mark">
-                        <?php if ($brand_logo_src !== ''): ?>
-                            <img src="<?= esc($brand_logo_src, 'attr') ?>" alt="<?= esc($brand_short_name, 'attr') ?>">
-                        <?php else: ?>
-                            <?= esc(brand_initial($config)) ?>
-                        <?php endif; ?>
-                    </span>
-                    <span class="app-brand-copy">
-                        <strong><?= esc($brand_short_name) ?></strong>
-                        <small><?= esc($brand_name) ?></small>
-                    </span>
-                </a>
-
                 <div id="app-navigation" class="navbar-collapse collapse app-sidebar-collapse">
                     <ul class="nav navbar-nav app-nav">
                         <?php foreach ($allowed_modules as $module): ?>
                             <?php $is_active_module = $module->module_id === $current_module; ?>
                             <li class="<?= $is_active_module ? 'active' : '' ?>">
                                 <a href="<?= base_url($module->module_id) ?>" title="<?= esc(lang('Module.' . $module->module_id), 'attr') ?>" class="menu-icon" <?= $is_active_module ? 'aria-current="page"' : '' ?>>
-                                    <img src="<?= base_url("images/menubar/$module->module_id.svg") ?>" alt="<?= esc(lang('Module.' . $module->module_id), 'attr') ?>">
+                                    <img src="<?= base_url("images/menubar/{$module->module_id}.svg") ?>" alt="" aria-hidden="true">
                                     <span><?= esc(lang('Module.' . $module->module_id)) ?></span>
                                 </a>
                             </li>
                         <?php endforeach; ?>
                     </ul>
-                </div>
-
-                <div class="app-sidebar-account">
-                    <?= anchor("home/changePassword/$user_info->person_id", "$user_info->first_name $user_info->last_name", ['class' => 'modal-dlg app-account-link', 'data-btn-submit' => lang('Common.submit'), 'title' => lang('Employees.change_password')]) ?>
-                    <?= anchor('home/logout', lang('Login.logout'), ['class' => 'app-logout-link']) ?>
                 </div>
             </aside>
 
