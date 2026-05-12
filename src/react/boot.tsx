@@ -1,6 +1,7 @@
 import { createRoot, type Root } from 'react-dom/client';
 import { HomeModules, type HomeModulesProps } from './home/HomeModules';
 import { LegacyAutoShell, type LegacyAutoShellProps } from './legacy/LegacyAutoShell';
+import { LegacyModalObserver } from './legacy/LegacyModalObserver';
 import { LoginPage, type LoginPageProps } from './login/LoginPage';
 import { ManagementPage, type ManagementPageProps } from './management/ManagementPage';
 import { ShellNavigation, type ShellNavigationProps } from './shell/ShellNavigation';
@@ -86,6 +87,11 @@ export function mountReactIslands(rootDocument: Document = document): void {
             }
 
             renderRoot(element, <LegacyAutoShell {...props} />);
+            return;
+        }
+
+        if (element.dataset.reactRoot === 'legacy-modal-observer') {
+            renderRoot(element, <LegacyModalObserver />);
             return;
         }
 

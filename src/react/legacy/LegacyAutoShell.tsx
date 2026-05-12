@@ -11,6 +11,7 @@ export type LegacyAutoShellProps = {
 };
 
 const ADOPTABLE_NODE_SELECTOR = ':scope > *:not(script):not(style):not(template)';
+const DEDICATED_PAGE_ROOTS = new Set(['home-modules', 'management-page', 'tabbed-shell']);
 
 function hasDedicatedReactPage(root: HTMLElement): boolean {
     const island = root.parentElement;
@@ -20,7 +21,9 @@ function hasDedicatedReactPage(root: HTMLElement): boolean {
         return true;
     }
 
-    return Array.from(parent.querySelectorAll<HTMLElement>('[data-react-root]')).some((element) => element !== island);
+    return Array.from(parent.querySelectorAll<HTMLElement>('[data-react-root]')).some((element) => (
+        element !== island && DEDICATED_PAGE_ROOTS.has(element.dataset.reactRoot ?? '')
+    ));
 }
 
 function collectAdoptableNodes(root: HTMLElement): HTMLElement[] {
@@ -31,7 +34,9 @@ function collectAdoptableNodes(root: HTMLElement): HTMLElement[] {
         return [];
     }
 
-    return Array.from(parent.querySelectorAll<HTMLElement>(ADOPTABLE_NODE_SELECTOR)).filter((node) => node !== island);
+    return Array.from(parent.querySelectorAll<HTMLElement>(ADOPTABLE_NODE_SELECTOR)).filter((node) => (
+        node !== island && node.dataset.reactRoot !== 'legacy-modal-observer'
+    ));
 }
 
 function enhanceLegacySurface(host: HTMLElement): void {

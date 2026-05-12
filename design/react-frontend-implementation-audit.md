@@ -13,6 +13,7 @@ Make a complete fully responsive frontend in React with shadcn components for OS
 - Management list pages use React/shadcn framing while preserving Bootstrap Table behavior.
 - Config and tax tabbed pages use React/shadcn framing while preserving legacy tab content.
 - Remaining header-rendered legacy pages are adopted into a responsive React/shadcn page shell.
+- AJAX Bootstrap modal/form fragments are enhanced by a React-managed observer for responsive modal framing.
 - Desktop and mobile smoke checks confirm no page-level horizontal overflow on representative core routes.
 - Existing PHP and frontend build/test commands pass.
 
@@ -77,9 +78,10 @@ Make a complete fully responsive frontend in React with shadcn components for OS
 | Management pages | `app/Views/partial/management_shell.php`, `src/react/management/ManagementPage.tsx` |
 | Tabbed config/tax pages | `app/Views/partial/tabbed_shell.php`, `src/react/tabs/TabbedShell.tsx` |
 | Remaining legacy pages | `src/react/legacy/LegacyAutoShell.tsx` mounted from `partial/header.php` |
+| Modal/form fragments | `src/react/legacy/LegacyModalObserver.tsx` mounted from `partial/header.php` |
 | Unit coverage | `src/react/boot.test.tsx` covers all React root types |
 | Build and runtime | `npm run build`, `npm run typecheck`, `npm run test:ui`, `composer test`, Playwright smoke |
 
 ## Known Limit
 
-This branch does not replace every PHP view, jQuery plugin, report table, receipt, and register workflow with native React state/components. It gives every shared-header browser page a React/shadcn responsive surface while retaining existing server-rendered workflow internals.
+This branch does not replace every PHP view, jQuery plugin, report table, receipt, and register workflow with native React state/components. It gives every shared-header browser page and Bootstrap modal/form fragment a React-managed responsive surface while retaining existing server-rendered workflow internals.

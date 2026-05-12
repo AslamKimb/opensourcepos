@@ -186,5 +186,6 @@ $legacy_auto_shell_props = [
 
         <div class="container">
             <div class="row">
+                <div data-react-root="legacy-modal-observer"></div>
                 <div data-react-root="legacy-auto-shell" data-props-id="<?= esc($legacy_auto_shell_props_id, 'attr') ?>"></div>
                 <script id="<?= esc($legacy_auto_shell_props_id, 'attr') ?>" type="application/json"><?= json_encode($legacy_auto_shell_props, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_THROW_ON_ERROR) ?></script>

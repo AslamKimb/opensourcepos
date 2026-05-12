@@ -176,6 +176,7 @@ describe('mountReactIslands', () => {
     it('mounts the legacy auto shell and adopts otherwise unwrapped page content', () => {
         document.body.innerHTML = `
             <main class="row">
+                <div data-react-root="legacy-modal-observer"></div>
                 <div data-react-root="legacy-auto-shell" data-props-id="legacy-auto-shell-props"></div>
                 <script id="legacy-auto-shell-props" type="application/json">
                     {
@@ -198,6 +199,33 @@ describe('mountReactIslands', () => {
         expect(root?.textContent).toContain('Listing');
         expect(root?.querySelector('.op-page-shell__content #item_form .op-page-shell__control')).toBeTruthy();
         expect(root?.querySelector('.op-page-shell__content #item_form .op-page-shell__button')).toBeTruthy();
+    });
+
+    it('mounts the legacy modal observer and enhances Bootstrap dialog content', () => {
+        document.body.innerHTML = `
+            <div data-react-root="legacy-modal-observer"></div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header"><h4 class="modal-title">Edit item</h4></div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <input class="form-control" name="name">
+                            <button class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        act(() => {
+            mountReactIslands(document);
+        });
+
+        expect(document.querySelector('.modal-dialog')?.classList.contains('op-modal-shell')).toBe(true);
+        expect(document.querySelector('.modal-content')?.classList.contains('op-modal-shell__content')).toBe(true);
+        expect(document.querySelector('.modal-body form')?.classList.contains('op-modal-shell__form')).toBe(true);
+        expect(document.querySelector('.form-control')?.classList.contains('op-modal-shell__control')).toBe(true);
+        expect(document.querySelector('.btn')?.classList.contains('op-modal-shell__button')).toBe(true);
     });
 
     it('leaves legacy auto shell hidden when a dedicated React page island exists', () => {
