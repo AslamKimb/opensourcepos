@@ -7,6 +7,17 @@
  * @var array $config
  * @var $validation
  */
+
+helper('vite');
+
+$login_props_id = 'login-page-props';
+$login_props = [
+    'company'        => (string) $config['company'],
+    'product'        => lang('Common.software_title'),
+    'logoSelector'   => '#login-logo-source',
+    'formSelector'   => '#login-form-source',
+    'footerSelector' => '#login-footer-source',
+];
 ?>
 
 <!doctype html>
@@ -28,13 +39,17 @@
     ?>
     <link rel="stylesheet" href="resources/bootswatch5/<?= "$theme" ?>/bootstrap.min.css">
     <link rel="stylesheet" href="css/login.css">
+    <?= vite_tags('src/react/main.tsx') ?>
     <meta name="theme-color" content="#2c3e50">
 </head>
 
 <body class="bg-secondary-subtle d-flex flex-column">
-    <main class="d-flex justify-content-around align-items-center flex-grow-1">
-        <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0">
-            <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end border-secondary-subtle px-4 pb-3 p-md-4">
+    <div data-react-root="login-page" data-props-id="<?= esc($login_props_id, 'attr') ?>"></div>
+    <script id="<?= esc($login_props_id, 'attr') ?>" type="application/json"><?= json_encode($login_props, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_THROW_ON_ERROR) ?></script>
+
+    <main class="d-flex justify-content-around align-items-center flex-grow-1" id="login-legacy-source">
+        <div class="container-login container-fluid d-flex flex-column flex-md-row bg-body shadow rounded m-3 p-4 p-md-0" id="login-card-source">
+            <div class="box-logo d-flex flex-column justify-content-center align-items-center border-end border-secondary-subtle px-4 pb-3 p-md-4" id="login-logo-source">
                 <?php if (isset($config['company_logo']) && !empty($config['company_logo'])): ?>
                     <img class="logo w-100" src="<?= base_url('uploads/' . esc($config['company_logo'], 'url')) ?>" alt="<?= esc(lang('Common.logo') . '&nbsp;' . $config['company']) ?>">
                 <?php else: ?>
@@ -45,7 +60,7 @@
                     </svg>
                 <?php endif; ?>
             </div>
-            <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4">
+            <section class="box-login d-flex flex-column justify-content-center align-items-center p-md-4" id="login-form-source">
                 <?= form_open('login') ?>
                 <h3 class="text-center m-0"><?= lang('Login.welcome', [lang('Common.software_short')]) ?></h3>
                 <?php if ($has_errors): ?>
@@ -103,7 +118,7 @@
         </div>
     </main>
 
-    <footer class="d-flex justify-content-center flex-shrink-0 text-center">
+    <footer class="d-flex justify-content-center flex-shrink-0 text-center" id="login-footer-source">
         <div class="footer container-fluid bg-body rounded shadow p-3 mb-md-4 mx-md-3">
             <span class="text-primary">
                 <svg height="1.25em" role="img" viewBox="0 0 308.57998 308.57997" xmlns="http://www.w3.org/2000/svg">

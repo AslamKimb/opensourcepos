@@ -35,3 +35,11 @@
 <div id="table_holder">
     <table id="table"></table>
 </div>
+
+<?= view('partial/management_shell', [
+    'controller_name'     => $controller_name,
+    'title'               => lang(ucfirst($controller_name) . '.tax_rates'),
+    'unique_id'           => 'tax_rate_id',
+    'page_size'           => $config['lines_per_page'],
+    'table_headers_json'  => $tax_rate_table_headers
+]) ?>

@@ -48,4 +48,9 @@
     </div>
 </div>
 
+<?= view('partial/tabbed_shell', [
+    'title'       => lang('Module.taxes'),
+    'description' => lang('Module.taxes_desc')
+]) ?>
+
 <?= view('partial/footer') ?>

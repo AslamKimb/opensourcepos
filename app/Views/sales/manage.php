@@ -92,4 +92,11 @@
 <div id="payment_summary">
 </div>
 
+<?= view('partial/management_shell', [
+    'controller_name'     => $controller_name,
+    'unique_id'           => 'sale_id',
+    'page_size'           => $config['lines_per_page'],
+    'table_headers_json'  => $table_headers
+]) ?>
+
 <?= view('partial/footer') ?>

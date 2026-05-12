@@ -76,4 +76,9 @@
     </div>
 </div>
 
+<?= view('partial/tabbed_shell', [
+    'title'       => lang('Module.config'),
+    'description' => lang('Module.config_desc')
+]) ?>
+
 <?= view('partial/footer') ?>
